@@ -1,14 +1,14 @@
 {
   "id": "/lss-gear-planner/",
-  "name": "L\u0160S Fighting Rifleman Gear Planner",
-  "short_name": "L\u0160S Gear",
-  "description": "360\u00b0 L\u0160S Gear Visualizer, Bought Checklist, Price & Condition Tracker, and 35L/80L Backpack Packing List.",
+  "name": "L\u0160S Kovinis \u0160aulys \u2014 Ekipuot\u0117",
+  "short_name": "L\u0160S Ekipuot\u0117",
+  "description": "Lietuvos \u0161auli\u0173 s\u0105jungos kovinio \u0161aulio 360\u00b0 ekipuot\u0117s, pirkini\u0173 ir kuprin\u0117s planavimo program\u0117l\u0117.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0b1120",
-  "theme_color": "#0b1120",
+  "background_color": "#101510",
+  "theme_color": "#101510",
   "icons": [
     {
       "src": "icon-192.png",
