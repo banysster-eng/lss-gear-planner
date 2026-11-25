@@ -490,7 +490,7 @@
     let state = {
       activeStage: 1, showCompleted: false, deg: 0, tiltX: 0, tiltY: 0, zoom: 1.0, panX: 0, panY: 0,
       mode: "hybrid", tab: "soldier", catFilter: "all",
-      bought: {}, paid: {}, condition: {}, customItems: [], packed: {},
+      bought: {}, paid: {}, condition: {}, deferred: {}, customItems: [], packed: {},
       spinning: false, spinRaf: null, modalItem: null, lastCompletedStage: null
     };
 
@@ -513,11 +513,11 @@
     function loadSaved() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) { const p = JSON.parse(raw); if (p.bought) state.bought = p.bought; if (p.paid) state.paid = p.paid; if (p.condition) state.condition = p.condition; if (Array.isArray(p.customItems)) state.customItems = p.customItems; if (p.packed) state.packed = p.packed; }
+        if (raw) { const p = JSON.parse(raw); if (p.bought) state.bought = p.bought; if (p.paid) state.paid = p.paid; if (p.condition) state.condition = p.condition; if (p.deferred) state.deferred = p.deferred; if (Array.isArray(p.customItems)) state.customItems = p.customItems; if (p.packed) state.packed = p.packed; }
       } catch (e) {}
     }
     function saveState() {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ bought: state.bought, paid: state.paid, condition: state.condition, customItems: state.customItems, packed: state.packed })); } catch (e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ bought: state.bought, paid: state.paid, condition: state.condition, deferred: state.deferred, customItems: state.customItems, packed: state.packed })); } catch (e) {}
     }
     function getPlannedPrice(item) {
       if (state.mode === "new") return item.priceNew;
@@ -536,13 +536,20 @@
       return items.length > 0 && items.every(i => !!state.bought[i.id]);
     }
     function getFirstUnfinishedStage() {
+      for (let s = 1; s <= 8; s++) {
+        const items = BASE_GEAR_ITEMS.filter(i => i.stage === s);
+        if (items.some(i => !state.bought[i.id] && !state.deferred[i.id])) return s;
+      }
       for (let s = 1; s <= 8; s++) { if (!isStageDone(s)) return s; }
       return 8;
     }
 
     function computeSchedule() {
       const months = [], assignedItems = [];
-      let queue = BASE_GEAR_ITEMS.map(i => ({ ...i })), carryIn = 0, m = 1;
+      // Active & bought items stay in stage order; "Buy Later" (deferred) items move to the end of the schedule
+      const primary = BASE_GEAR_ITEMS.filter(i => state.bought[i.id] || !state.deferred[i.id]).map(i => ({ ...i }));
+      const later = BASE_GEAR_ITEMS.filter(i => !state.bought[i.id] && state.deferred[i.id]).map(i => ({ ...i }));
+      let queue = [...primary, ...later], carryIn = 0, m = 1;
       while (queue.length > 0 && m <= 12) {
         const available = MONTHLY_CAP + carryIn; let remaining = available; const bought = [];
         while (queue.length > 0) {
@@ -666,7 +673,14 @@
         const cond = state.condition[item.id] || (item.hybridUseUsed && state.mode !== "new" ? "Naudota" : "Nauja");
         document.getElementById("mm-cond-in").innerHTML = condOpts(cond);
         document.getElementById("mm-alt").textContent = `N €${item.priceNew} / U €${item.priceUsed}`;
-        document.getElementById("mm-links").innerHTML = (item.shops || []).map(s => `<a href="${s.url}" target="_blank" class="px-3 py-2 rounded bg-[#d4a63a] text-[#12170e] font-mono text-xs font-bold uppercase">${s.label} ↗</a>`).join("");
+        const isDef = !!state.deferred[item.id];
+        const defBtnHtml = !state.bought[item.id]
+          ? `<button id="mm-def-btn" class="px-3 py-2 rounded bg-[#241c0d] border border-[#f59e0b]/70 text-[#fcd34d] font-mono text-xs font-bold uppercase">${isDef ? "↩ Grąžinti" : "⏳ Vėliau"}</button>`
+          : "";
+        document.getElementById("mm-links").innerHTML =
+          (item.shops || []).map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded bg-[#d4a63a] text-[#12170e] font-mono text-xs font-bold uppercase">${s.label} ↗</a>`).join("") + defBtnHtml;
+        const mmDef = document.getElementById("mm-def-btn");
+        if (mmDef) mmDef.addEventListener("click", () => { toggleDefer(item, !isDef); mobileModal.classList.add("hidden"); mobileModal.classList.remove("flex"); });
       } else {
         box.classList.add("hidden");
         document.getElementById("mm-links").innerHTML = `<span class="font-mono text-[#93a38c]">${item.weightG}g</span>`;
@@ -683,10 +697,13 @@
     function markItemBought(item, checked) {
       const wasStageDone = isStageDone(item.stage);
       state.bought[item.id] = checked;
-      if (checked && state.paid[item.id] === undefined) state.paid[item.id] = getPlannedPrice(item);
+      if (checked) {
+        delete state.deferred[item.id];
+        if (state.paid[item.id] === undefined) state.paid[item.id] = getPlannedPrice(item);
+      }
       saveState();
 
-      // If this purchase just completed the stage, auto-remove it and jump to next unfinished stage!
+      // If this purchase just completed the stage, auto-remove stage from strip and jump to next unfinished stage!
       if (checked && !wasStageDone && isStageDone(item.stage)) {
         state.lastCompletedStage = item.stage;
         const nextStage = getFirstUnfinishedStage();
@@ -696,6 +713,19 @@
       } else {
         showToast(checked ? "NUPIRKTA ✓" : "ATŽYMĖTA");
       }
+      renderAll();
+    }
+
+    function toggleDefer(item, defer) {
+      if (defer) {
+        state.deferred[item.id] = true;
+        delete state.bought[item.id];
+        showToast("⏳ ATIDĖTA VĖLIAU");
+      } else {
+        delete state.deferred[item.id];
+        showToast("↩ GRĄŽINTA Į PLANĄ");
+      }
+      saveState();
       renderAll();
     }
 
@@ -719,17 +749,19 @@
         return;
       }
 
-      const stageItems = BASE_GEAR_ITEMS.filter(i => i.stage === nextStage && !state.bought[i.id]);
-      const nextItem = stageItems[0];
+      const activeStageItems = BASE_GEAR_ITEMS.filter(i => i.stage === nextStage && !state.bought[i.id] && !state.deferred[i.id]);
+      const deferredStageItems = BASE_GEAR_ITEMS.filter(i => i.stage === nextStage && !state.bought[i.id] && state.deferred[i.id]);
+      const nextItem = activeStageItems[0] || deferredStageItems[0];
+      const isDeferredOnly = activeStageItems.length === 0;
       const completedBanner = state.lastCompletedStage
-        ? `<div class="px-2.5 py-1 rounded bg-[#006a44]/35 border border-[#4ade80]/50 text-[#4ade80] font-mono text-[11px] font-bold">✓ ETAPAS ${state.lastCompletedStage} BAIGTAS IR PAŠALINTAS IŠ SĄRAŠO!</div>`
+        ? `<div class="px-2.5 py-1 rounded bg-[#006a44]/35 border border-[#4ade80]/50 text-[#4ade80] font-mono text-[11px] font-bold">✓ ETAPAS ${state.lastCompletedStage} BAIGTAS!</div>`
         : "";
 
       card.innerHTML = `
         ${completedBanner}
         <div class="flex items-center justify-between gap-2">
-          <span class="font-mono text-[11px] font-bold uppercase tracking-wider text-[#d4a63a]">🎯 KĄ PIRKTI TOLIAU (ETAPAS ${nextStage})</span>
-          <span class="font-mono text-[11px] text-[#93a38c]">Liko ${stageItems.length} d. šiame etape</span>
+          <span class="font-mono text-[11px] font-bold uppercase tracking-wider ${isDeferredOnly ? "text-[#f59e0b]" : "text-[#d4a63a]"}">${isDeferredOnly ? "⏳ ATIDĖTAS PIRKINYS" : "🎯 KĄ PIRKTI TOLIAU"} (ETAPAS ${nextStage})</span>
+          <span class="font-mono text-[11px] text-[#93a38c]">Liko ${activeStageItems.length + deferredStageItems.length} d.${deferredStageItems.length ? ` (${deferredStageItems.length} vėliau)` : ""}</span>
         </div>
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
@@ -743,11 +775,14 @@
           </div>
           <div class="flex flex-wrap items-center gap-1.5 shrink-0">
             ${(nextItem.shops || []).map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-2 rounded-lg bg-[#101510] border border-[#d4a63a] text-[#d4a63a] font-mono text-[11px] font-bold uppercase active:scale-95">${s.label} ↗</a>`).join("")}
+            ${!state.deferred[nextItem.id] ? `<button id="btn-defer-next" class="px-2.5 py-2 rounded-lg bg-[#241c0d] border border-[#f59e0b]/70 text-[#fcd34d] font-mono text-[11px] font-bold uppercase active:scale-95">⏳ Vėliau</button>` : ""}
             <button id="btn-quick-buy-next" class="px-3 py-2 rounded-lg bg-[#006a44] text-white font-mono text-[11px] font-bold uppercase active:scale-95">✓ Jau turiu</button>
           </div>
         </div>
       `;
       document.getElementById("btn-quick-buy-next").addEventListener("click", () => markItemBought(nextItem, true));
+      const defBtn = document.getElementById("btn-defer-next");
+      if (defBtn) defBtn.addEventListener("click", () => toggleDefer(nextItem, true));
     }
 
     function renderAll() {
@@ -825,19 +860,67 @@
 
       const sList = document.getElementById("stage-items-list");
       sList.innerHTML = "";
-      curStageItems.forEach(item => {
+      const sortedStageItems = [...curStageItems].sort((a, b) => {
+        const ra = state.bought[a.id] ? 2 : (state.deferred[a.id] ? 1 : 0);
+        const rb = state.bought[b.id] ? 2 : (state.deferred[b.id] ? 1 : 0);
+        return ra - rb;
+      });
+      sortedStageItems.forEach(item => {
         const isB = !!state.bought[item.id];
+        const isDef = !isB && !!state.deferred[item.id];
         const pv = state.paid[item.id] !== undefined ? state.paid[item.id] : "";
+        const cond = state.condition[item.id] || (item.hybridUseUsed && state.mode !== "new" ? "Naudota" : "Nauja");
         const row = document.createElement("div");
-        row.className = `p-2 rounded-lg bg-[#101510] border border-[#31402e] hover:border-[#d4a63a] flex items-center justify-between gap-2 cursor-pointer ${isB ? "border-[#4ade80]/50 opacity-75" : ""}`;
+
+        if (isB) {
+          // Minimized 1-line green bar for bought items (never deleted!)
+          row.className = "px-2.5 py-1.5 rounded-lg bg-[#0d2417] border border-[#4ade80]/60 flex items-center justify-between gap-2 cursor-pointer hover:border-[#4ade80]";
+          row.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <input type="checkbox" checked class="s-cb w-4 h-4 accent-[#4ade80] shrink-0" />
+              <span class="text-[11px] font-bold text-[#86efac] truncate line-through">${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 font-mono text-[10px]">
+              <span class="px-1.5 py-0.5 rounded bg-[#006a44]/60 text-[#bbf7d0] font-bold">✓ €${getEffectiveCost(item)}</span>
+              <span class="text-[#86efac]/80 hidden sm:inline">${cond}</span>
+            </div>
+          `;
+          attachPreview(row, item);
+          row.querySelector(".s-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+          sList.appendChild(row);
+          return;
+        }
+
+        if (isDef) {
+          // Compact 1-line amber bar for "Buy Later" items
+          row.className = "px-2.5 py-1.5 rounded-lg bg-[#241c0d] border border-[#f59e0b]/60 flex items-center justify-between gap-2 cursor-pointer hover:border-[#f59e0b]";
+          row.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <input type="checkbox" class="s-cb w-4 h-4 accent-[#4ade80] shrink-0" />
+              <span class="text-[11px] font-bold text-[#fcd34d] truncate">⏳ ${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 font-mono text-[10px]">
+              <span class="text-[#fcd34d]/80">~€${getPlannedPrice(item)}</span>
+              <button class="s-und px-2 py-0.5 rounded bg-[#101510] border border-[#f59e0b]/70 text-[#fcd34d] font-bold active:scale-95">↩ Grąžinti</button>
+            </div>
+          `;
+          attachPreview(row, item);
+          row.querySelector(".s-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+          row.querySelector(".s-und").addEventListener("click", () => toggleDefer(item, false));
+          sList.appendChild(row);
+          return;
+        }
+
+        row.className = "p-2 rounded-lg bg-[#101510] border border-[#31402e] hover:border-[#d4a63a] flex items-center justify-between gap-2 cursor-pointer";
         row.innerHTML = `
           <div class="flex items-center gap-2.5 min-w-0 flex-1">
-            <input type="checkbox" ${isB ? "checked" : ""} class="s-cb w-5 h-5 accent-[#4ade80] shrink-0" />
+            <input type="checkbox" class="s-cb w-5 h-5 accent-[#4ade80] shrink-0" />
             <div class="w-11 h-10 rounded bg-white p-0.5 flex items-center justify-center shrink-0"><img src="${getPicUrl(item.pic)}" loading="lazy" class="max-h-full max-w-full object-contain" /></div>
             <div class="min-w-0 flex-1">
-              <div class="text-xs font-bold truncate ${isB ? "line-through" : ""}">${item.name}</div>
+              <div class="text-xs font-bold truncate">${item.name}</div>
               <div class="flex flex-wrap items-center gap-1 mt-1">
                 ${(item.shops || []).map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="px-1.5 py-0.5 rounded bg-[#1f2a1e] border border-[#d4a63a]/50 text-[#d4a63a] font-mono text-[10px] font-bold hover:bg-[#d4a63a] hover:text-[#12170e]">${s.label} ↗</a>`).join("")}
+                <button class="s-def px-1.5 py-0.5 rounded bg-[#241c0d] border border-[#f59e0b]/60 text-[#fcd34d] font-mono text-[10px] font-bold active:scale-95">⏳ Vėliau</button>
               </div>
             </div>
           </div>
@@ -848,6 +931,7 @@
         `;
         attachPreview(row, item);
         row.querySelector(".s-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+        row.querySelector(".s-def").addEventListener("click", () => toggleDefer(item, true));
         row.querySelector(".s-pr").addEventListener("change", e => {
           const v = e.target.value.trim();
           if (v === "") delete state.paid[item.id]; else { state.paid[item.id] = Math.max(0, Number(v)); markItemBought(item, true); return; }
@@ -870,40 +954,93 @@
       grid.innerHTML = "";
       state.customItems.forEach((ci, idx) => {
         const card = document.createElement("div");
-        card.className = "mil-card rounded-lg p-3 border-[#4ade80]/50 flex items-center justify-between gap-2";
+        card.className = "px-3 py-2 rounded-lg bg-[#0d2417] border border-[#4ade80]/60 flex items-center justify-between gap-2";
         card.innerHTML = `
-          <div class="min-w-0"><div class="text-xs font-bold text-[#4ade80] truncate">✓ ${ci.name}</div><div class="text-[11px] font-mono text-[#93a38c]">${ci.condition}</div></div>
-          <div class="flex items-center gap-2 shrink-0"><span class="font-mono font-bold text-sm text-[#d4a63a]">€${ci.pricePaid}</span><button class="del-c px-2 py-1 rounded bg-[#c1272d]/30 text-white text-xs">✕</button></div>
+          <div class="min-w-0"><div class="text-xs font-bold text-[#86efac] truncate">✓ ${ci.name}</div><div class="text-[10px] font-mono text-[#86efac]/75">${ci.condition}</div></div>
+          <div class="flex items-center gap-2 shrink-0"><span class="font-mono font-bold text-xs text-[#bbf7d0]">€${ci.pricePaid}</span><button class="del-c px-2 py-0.5 rounded bg-[#c1272d]/40 text-white text-xs">✕</button></div>
         `;
         card.querySelector(".del-c").addEventListener("click", () => { state.customItems.splice(idx, 1); saveState(); renderAll(); showToast("PAŠALINTA"); });
         grid.appendChild(card);
       });
 
-      sched.assignedItems.filter(i => state.catFilter === "all" || i.category === state.catFilter).forEach(item => {
+      const filteredChecklist = sched.assignedItems
+        .filter(i => state.catFilter === "all" || i.category === state.catFilter)
+        .sort((a, b) => {
+          const ra = state.bought[a.id] ? 2 : (state.deferred[a.id] ? 1 : 0);
+          const rb = state.bought[b.id] ? 2 : (state.deferred[b.id] ? 1 : 0);
+          return ra - rb;
+        });
+
+      filteredChecklist.forEach(item => {
         const isB = !!state.bought[item.id];
+        const isDef = !isB && !!state.deferred[item.id];
         const pv = state.paid[item.id] !== undefined ? state.paid[item.id] : "";
         const cond = state.condition[item.id] || (item.hybridUseUsed && state.mode !== "new" ? "Naudota" : "Nauja");
         const card = document.createElement("div");
-        card.className = `mil-card rounded-lg p-2.5 space-y-2 cursor-pointer hover:border-[#d4a63a] ${isB ? "border-[#4ade80]/50 bg-[#142014]" : ""}`;
+
+        if (isB) {
+          // Minimized 1-line emerald-green row (never deleted!)
+          card.className = "px-2.5 py-2 rounded-lg bg-[#0d2417] border border-[#4ade80]/60 flex items-center justify-between gap-2 cursor-pointer hover:border-[#4ade80]";
+          card.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <input type="checkbox" checked class="c-cb w-4 h-4 accent-[#4ade80] shrink-0" />
+              <span class="text-xs font-bold text-[#86efac] truncate line-through">${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 font-mono text-[10px]">
+              <span class="px-1.5 py-0.5 rounded bg-[#006a44]/60 text-[#bbf7d0] font-bold">✓ €${getEffectiveCost(item)}</span>
+              <span class="text-[#86efac]/75">${cond}</span>
+            </div>
+          `;
+          attachPreview(card, item);
+          card.querySelector(".c-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+          grid.appendChild(card);
+          return;
+        }
+
+        if (isDef) {
+          // Compact amber row for Buy Later items
+          card.className = "px-2.5 py-2 rounded-lg bg-[#241c0d] border border-[#f59e0b]/60 flex items-center justify-between gap-2 cursor-pointer hover:border-[#f59e0b]";
+          card.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <input type="checkbox" class="c-cb w-4 h-4 accent-[#4ade80] shrink-0" />
+              <div class="min-w-0">
+                <div class="text-xs font-bold text-[#fcd34d] truncate">⏳ ${item.name}</div>
+                <div class="text-[10px] font-mono text-[#fcd34d]/75">ATIDĖTA VĖLIAU • M${item.assignedMonth} • ~€${getPlannedPrice(item)}</div>
+              </div>
+            </div>
+            <button class="c-und px-2 py-1 rounded bg-[#101510] border border-[#f59e0b]/70 text-[#fcd34d] font-mono text-[10px] font-bold shrink-0 active:scale-95">↩ Grąžinti</button>
+          `;
+          attachPreview(card, item);
+          card.querySelector(".c-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+          card.querySelector(".c-und").addEventListener("click", () => toggleDefer(item, false));
+          grid.appendChild(card);
+          return;
+        }
+
+        card.className = "mil-card rounded-lg p-2.5 space-y-2 cursor-pointer hover:border-[#d4a63a]";
         card.innerHTML = `
           <div class="flex items-center gap-2.5">
-            <input type="checkbox" ${isB ? "checked" : ""} class="c-cb w-5 h-5 accent-[#4ade80] shrink-0" />
+            <input type="checkbox" class="c-cb w-5 h-5 accent-[#4ade80] shrink-0" />
             <div class="w-12 h-11 rounded bg-white p-0.5 flex items-center justify-center shrink-0"><img src="${getPicUrl(item.pic)}" loading="lazy" class="max-h-full max-w-full object-contain" /></div>
             <div class="min-w-0 flex-1">
               <div class="flex justify-between text-[10px] font-mono text-[#93a38c]"><span class="text-[#d4a63a] font-bold">E${item.stage} • M${item.assignedMonth}</span><span>~€${getPlannedPrice(item)}</span></div>
-              <div class="text-xs font-bold truncate ${isB ? "line-through opacity-65" : ""}">${item.name}</div>
+              <div class="text-xs font-bold truncate">${item.name}</div>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-1.5">
             <div class="flex items-center gap-1 bg-[#101510] border border-[#31402e] rounded px-2 py-1 font-mono"><span class="text-[11px] text-[#93a38c]">€</span><input type="number" min="0" inputmode="numeric" placeholder="${getPlannedPrice(item)}" value="${pv}" class="c-pr w-full bg-transparent text-xs text-[#d4a63a] font-bold focus:outline-none" /></div>
             <select class="c-cond px-2 py-1 rounded bg-[#101510] border border-[#31402e] text-[11px] text-[#eef2e8]">${condOpts(cond)}</select>
           </div>
-          <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
-            ${(item.shops || []).map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded bg-[#101510] border border-[#d4a63a]/60 text-[#d4a63a] font-mono text-[10px] font-bold hover:bg-[#d4a63a] hover:text-[#12170e]">${s.label} ↗</a>`).join("")}
+          <div class="flex flex-wrap items-center justify-between gap-1.5 pt-0.5">
+            <div class="flex flex-wrap items-center gap-1.5">
+              ${(item.shops || []).map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="px-2 py-1 rounded bg-[#101510] border border-[#d4a63a]/60 text-[#d4a63a] font-mono text-[10px] font-bold hover:bg-[#d4a63a] hover:text-[#12170e]">${s.label} ↗</a>`).join("")}
+            </div>
+            <button class="c-def px-2 py-1 rounded bg-[#241c0d] border border-[#f59e0b]/60 text-[#fcd34d] font-mono text-[10px] font-bold active:scale-95">⏳ Vėliau</button>
           </div>
         `;
         attachPreview(card, item);
         card.querySelector(".c-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+        card.querySelector(".c-def").addEventListener("click", () => toggleDefer(item, true));
         card.querySelector(".c-pr").addEventListener("change", e => { const v = e.target.value.trim(); if (v === "") delete state.paid[item.id]; else { state.paid[item.id] = Math.max(0, Number(v)); markItemBought(item, true); return; } saveState(); renderAll(); showToast("KAINA IŠSAUGOTA"); });
         card.querySelector(".c-cond").addEventListener("change", e => { state.condition[item.id] = e.target.value; if (e.target.value === "LŠS Išduota") { state.paid[item.id] = 0; markItemBought(item, true); return; } saveState(); renderAll(); showToast(e.target.value); });
         grid.appendChild(card);
