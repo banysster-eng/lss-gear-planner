@@ -11,49 +11,25 @@
   <link rel="apple-touch-icon" href="icon-192.png" />
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
-    /* Militaristic Lithuanian Ranger Olive Palette */
     .mil-theme {
-      --bg: #101510;
-      --surface: #171f16;
-      --surface-2: #1f2a1e;
-      --line: #31402e;
-      --ink: #eef2e8;
-      --muted: #93a38c;
-      --gold: #d4a63a;
-      --gold-ink: #12170e;
-      --lt-y: #fdb913;
-      --lt-g: #006a44;
-      --lt-r: #c1272d;
-      --ok: #4ade80;
+      --bg: #101510; --surface: #171f16; --surface-2: #1f2a1e;
+      --line: #31402e; --ink: #eef2e8; --muted: #93a38c;
+      --gold: #d4a63a; --gold-ink: #12170e;
+      --lt-y: #fdb913; --lt-g: #006a44; --lt-r: #c1272d; --ok: #4ade80;
     }
     * { -webkit-tap-highlight-color: transparent; }
     body {
-      background-color: var(--bg);
-      color: var(--ink);
+      background-color: var(--bg); color: var(--ink);
       background-image: radial-gradient(rgba(212,166,58,0.04) 1px, transparent 1px);
       background-size: 22px 22px;
     }
-    .tricolor-bar {
-      height: 3px;
-      background: linear-gradient(90deg, var(--lt-y) 0% 33.3%, var(--lt-g) 33.3% 66.6%, var(--lt-r) 66.6% 100%);
-    }
-    .mil-card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-    }
-    .mil-panel {
-      background: var(--surface-2);
-      border: 1px solid var(--line);
-    }
-    .mil-btn-active[data-active="true"] {
-      background: var(--gold) !important;
-      color: var(--gold-ink) !important;
-      border-color: var(--gold) !important;
-    }
+    .tricolor-bar { height: 3px; background: linear-gradient(90deg, var(--lt-y) 0% 33.3%, var(--lt-g) 33.3% 66.6%, var(--lt-r) 66.6% 100%); }
+    .mil-card { background: var(--surface); border: 1px solid var(--line); }
+    .mil-panel { background: var(--surface-2); border: 1px solid var(--line); }
+    .mil-btn-active[data-active="true"] { background: var(--gold) !important; color: var(--gold-ink) !important; border-color: var(--gold) !important; }
     .bnav-btn[data-active="true"] { color: var(--gold); }
     .bnav-btn[data-active="true"] .bnav-ind { background: rgba(212,166,58,0.18); border-color: rgba(212,166,58,0.5); }
 
-    /* Tactical HUD Corner Brackets */
     .hud-corners::before, .hud-corners::after {
       content: ""; position: absolute; width: 16px; height: 16px; pointer-events: none; z-index: 20;
       border-color: var(--gold); border-style: solid; opacity: 0.75;
@@ -61,33 +37,19 @@
     .hud-corners::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
     .hud-corners::after { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
 
-    /* 1.8-Second Opening Cinematic Splash */
+    /* 1.8s Opening Splash */
     #intro-splash {
-      position: fixed; inset: 0; z-index: 20000;
-      background: #0b0f0b;
+      position: fixed; inset: 0; z-index: 20000; background: #0b0f0b;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       transition: opacity 0.4s ease, visibility 0.4s ease;
     }
     #intro-splash.done { opacity: 0; visibility: hidden; pointer-events: none; }
-    @keyframes scanDown {
-      0% { transform: translateY(-100%); opacity: 0; }
-      20% { opacity: 0.9; }
-      80% { opacity: 0.9; }
-      100% { transform: translateY(420%); opacity: 0; }
-    }
-    .scan-beam {
-      position: absolute; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      box-shadow: 0 0 14px var(--gold);
-      animation: scanDown 1.1s linear infinite;
-    }
-    @keyframes ribbonGrow {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
-    }
+    @keyframes scanDown { 0% { transform: translateY(-100%); opacity: 0; } 20%,80% { opacity: 0.9; } 100% { transform: translateY(420%); opacity: 0; } }
+    .scan-beam { position: absolute; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); box-shadow: 0 0 14px var(--gold); animation: scanDown 1.1s linear infinite; }
+    @keyframes ribbonGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
     .intro-ribbon { transform-origin: center; animation: ribbonGrow 0.45s cubic-bezier(0.22,1,0.36,1) forwards; }
 
-    /* Smooth 360° Turntable */
+    /* Smooth 3D Viewer */
     #viewer-stage { touch-action: none; user-select: none; perspective: 1100px; }
     #viewer-transform { transform-origin: center center; will-change: transform; position: relative; width: 100%; }
     .rot-layer { width: 100%; height: auto; display: block; pointer-events: none; transition: opacity 0.16s linear; }
@@ -96,23 +58,16 @@
     .hotspot {
       position: absolute; width: 26px; height: 26px; border-radius: 9999px;
       background: rgba(212, 166, 58, 0.25); border: 2px solid var(--gold);
-      transform: translate(-50%, -50%); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      transform: translate(-50%, -50%); cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
     .hotspot::after { content: ""; width: 8px; height: 8px; border-radius: 9999px; background: #fff; }
     .hotspot[data-changed="true"] { border-color: var(--ok); background: rgba(74, 222, 128, 0.35); box-shadow: 0 0 10px rgba(74, 222, 128, 0.85); }
 
-    #hover-card {
-      position: fixed; z-index: 9999; pointer-events: none; opacity: 0;
-      transform: translateY(6px); transition: opacity 0.12s ease, transform 0.12s ease; width: 290px;
-    }
+    #hover-card { position: fixed; z-index: 9999; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity 0.12s ease, transform 0.12s ease; width: 290px; }
     #hover-card.visible { opacity: 1; transform: translateY(0); }
     @media (hover: none) { #hover-card { display: none !important; } }
 
-    #mil-toast {
-      position: fixed; left: 50%; bottom: 82px; transform: translateX(-50%) translateY(16px);
-      opacity: 0; pointer-events: none; z-index: 11000; transition: all 0.2s ease;
-    }
+    #mil-toast { position: fixed; left: 50%; bottom: 82px; transform: translateX(-50%) translateY(16px); opacity: 0; pointer-events: none; z-index: 11000; transition: all 0.2s ease; }
     #mil-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     @media (min-width: 768px) { #mil-toast { bottom: 24px; } }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -121,28 +76,21 @@
 </head>
 <body class="mil-theme antialiased min-h-screen pb-24 md:pb-8">
 
-  <!-- ==================== 1.8-SECOND OPENING CINEMATIC VISUALIZATION ==================== -->
+  <!-- 1.8s Opening Cinematic -->
   <div id="intro-splash" onclick="finishIntro()">
     <div class="w-full max-w-xs px-6 flex flex-col items-center text-center space-y-4">
-      <!-- LŠS Double Cross Shield Emblem -->
-      <div class="relative w-16 h-16 flex items-center justify-center">
-        <svg viewBox="0 0 64 76" class="w-16 h-16 drop-shadow-[0_0_18px_rgba(212,166,58,0.45)]">
-          <path d="M6 6 H58 V42 Q58 64 32 72 Q6 64 6 42 Z" fill="#1b3a24" stroke="#d4a63a" stroke-width="3"/>
-          <path d="M32 16 V58 M19 27 H45 M19 41 H45" stroke="#d4a63a" stroke-width="5" stroke-linecap="square"/>
-        </svg>
-      </div>
-
-      <!-- Rapid Morph Preview Frame (Stage 1 -> 4 -> 8) -->
+      <svg viewBox="0 0 64 76" class="w-16 h-16 drop-shadow-[0_0_18px_rgba(212,166,58,0.45)]">
+        <path d="M6 6 H58 V42 Q58 64 32 72 Q6 64 6 42 Z" fill="#1b3a24" stroke="#d4a63a" stroke-width="3"/>
+        <path d="M32 16 V58 M19 27 H45 M19 41 H45" stroke="#d4a63a" stroke-width="5" stroke-linecap="square"/>
+      </svg>
       <div class="relative w-36 h-48 rounded-lg overflow-hidden border border-[#d4a63a]/60 bg-[#141a14] shadow-2xl">
         <img id="intro-morph-img" src="" alt="LŠS Morph" class="w-full h-full object-cover" />
         <div class="scan-beam"></div>
         <div class="absolute bottom-1.5 left-1.5 right-1.5 bg-black/75 text-[10px] font-mono uppercase tracking-widest text-[#d4a63a] py-0.5 rounded" id="intro-stage-txt">ETAPAS 1 / 8</div>
       </div>
-
       <div class="w-44 h-1 rounded-full overflow-hidden intro-ribbon tricolor-bar"></div>
-
       <div class="space-y-0.5">
-        <div class="text-sm font-mono font-bold tracking-[0.22em] text-[#eef2e8] uppercase">LŠS • KOVINIS ŠAULYS</div>
+        <div class="text-sm font-mono font-bold tracking-[0.22em] uppercase">LŠS • KOVINIS ŠAULYS</div>
         <div class="text-[11px] font-mono tracking-widest text-[#93a38c] uppercase">LIETUVA // EKIPUOTĖS PLANAS</div>
       </div>
     </div>
@@ -151,7 +99,7 @@
   <!-- Toast -->
   <div id="mil-toast" class="px-4 py-2 rounded-lg bg-[#171f16] border border-[#d4a63a] text-[#eef2e8] text-xs font-mono uppercase tracking-wider shadow-2xl">IŠSAUGOTA</div>
 
-  <!-- Desktop Floating Photo Hover Card -->
+  <!-- Desktop Hover Card -->
   <div id="hover-card" class="mil-card rounded-lg shadow-2xl overflow-hidden border-[#d4a63a]">
     <div class="bg-white h-40 flex items-center justify-center relative p-2">
       <img id="hc-img" src="" class="max-h-full max-w-full object-contain" />
@@ -168,7 +116,7 @@
     </div>
   </div>
 
-  <!-- Mobile Tap-to-Inspect & Quick-Edit Sheet -->
+  <!-- Mobile Tap Quick-Edit Sheet -->
   <div id="mobile-modal" class="fixed inset-0 z-[10000] bg-black/80 hidden items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="mil-card rounded-t-2xl sm:rounded-xl w-full max-w-md overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto border-[#d4a63a]/60">
       <div class="tricolor-bar"></div>
@@ -181,6 +129,7 @@
         <div>
           <div class="font-bold text-sm" id="mm-title"></div>
           <div class="text-[#93a38c]" id="mm-brand"></div>
+          <div id="mm-tip" class="mt-1.5 text-[11px] text-[#d4a63a]"></div>
         </div>
         <div id="mm-edit-box" class="mil-panel rounded-lg p-3 space-y-2.5">
           <label class="flex items-center justify-between cursor-pointer">
@@ -203,10 +152,10 @@
     </div>
   </div>
 
-  <!-- Top Lithuanian Military Tricolor Ribbon -->
+  <!-- Lithuanian Tricolor Top Ribbon -->
   <div class="tricolor-bar sticky top-0 z-50"></div>
 
-  <!-- Simple Military Top Header -->
+  <!-- Top Header -->
   <header class="sticky top-[3px] z-40 bg-[#141b13]/95 backdrop-blur-md border-b border-[#31402e]">
     <div class="max-w-6xl mx-auto px-3 sm:px-5 py-2.5 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2.5">
@@ -219,15 +168,13 @@
           <div class="text-[10px] font-mono text-[#93a38c] uppercase tracking-wider">LT Ekipuotė • €400/mėn + Likutis</div>
         </div>
       </div>
-
       <div class="flex items-center gap-1.5">
-        <!-- Simple New / Hybrid / Used toggle -->
         <div class="inline-flex rounded-lg border border-[#31402e] bg-[#101510] p-0.5 text-[10px] font-mono uppercase" id="mode-switcher">
           <button data-mode="new" class="mil-btn-active px-2 py-1 rounded font-bold transition">Nauja</button>
           <button data-mode="hybrid" data-active="true" class="mil-btn-active px-2 py-1 rounded font-bold transition">Mix ★</button>
           <button data-mode="used" class="mil-btn-active px-2 py-1 rounded font-bold transition">Naud.</button>
         </div>
-        <button id="btn-replay-intro" class="px-2 py-1.5 rounded-lg border border-[#31402e] bg-[#101510] text-[10px] font-mono uppercase text-[#d4a63a] active:scale-95" title="Replay 1.8s Intro">▶</button>
+        <button id="btn-replay-intro" class="px-2 py-1.5 rounded-lg border border-[#31402e] bg-[#101510] text-[10px] font-mono uppercase text-[#d4a63a] active:scale-95" title="Replay Intro">▶</button>
         <button id="pwa-install-btn" class="hidden px-2.5 py-1.5 rounded-lg bg-[#006a44] text-white text-[10px] font-mono font-bold uppercase active:scale-95">📲 Diegti</button>
       </div>
     </div>
@@ -235,7 +182,7 @@
 
   <main class="max-w-6xl mx-auto px-3 sm:px-5 py-4 space-y-4">
 
-    <!-- 3 Dumb-Simple Military Readout Tiles -->
+    <!-- 3 Readout Tiles -->
     <section class="grid grid-cols-3 gap-2 sm:gap-3">
       <div class="mil-card rounded-lg p-2.5 sm:p-3">
         <div class="text-[10px] font-mono uppercase tracking-wider text-[#93a38c]">Metinis / Year</div>
@@ -248,38 +195,43 @@
         <div id="kpi-bought" class="text-[10px] font-mono text-[#93a38c]">0 / 35</div>
       </div>
       <div class="mil-card rounded-lg p-2.5 sm:p-3">
-        <div class="text-[10px] font-mono uppercase tracking-wider text-[#93a38c]">M<span id="kpi-m">1</span> Biudžetas</div>
-        <div class="text-base sm:text-xl font-mono font-bold text-[#eef2e8] tabular-nums mt-0.5"><span id="kpi-spent">€0</span><span class="text-xs text-[#93a38c]">/€<span id="kpi-avail">400</span></span></div>
-        <div class="text-[10px] font-mono text-[#4ade80]">+€<span id="kpi-left">0</span> likutis</div>
+        <div class="text-[10px] font-mono uppercase tracking-wider text-[#93a38c]">Aktyvus Etapas</div>
+        <div id="kpi-stage-stat" class="text-base sm:text-xl font-mono font-bold text-[#d4a63a] tabular-nums mt-0.5">1 / 8</div>
+        <div id="kpi-done-stages" class="text-[10px] font-mono text-[#4ade80]">0 baigti ✓</div>
       </div>
     </section>
 
-    <!-- Desktop 3-Tab Military Bar -->
+    <!-- Desktop 3-Tab Bar -->
     <nav class="hidden md:grid grid-cols-3 gap-2">
-      <button data-tab="soldier" data-active="true" class="tab-btn mil-btn-active py-2.5 rounded-lg border border-[#31402e] bg-[#171f16] font-mono text-xs font-bold uppercase tracking-widest transition">1. KARYS 360° // ETAPAI</button>
+      <button data-tab="soldier" data-active="true" class="tab-btn mil-btn-active py-2.5 rounded-lg border border-[#31402e] bg-[#171f16] font-mono text-xs font-bold uppercase tracking-widest transition">1. KARYS // PATARIMAI</button>
       <button data-tab="checklist" class="tab-btn mil-btn-active py-2.5 rounded-lg border border-[#31402e] bg-[#171f16] font-mono text-xs font-bold uppercase tracking-widest transition">2. PIRKINIAI // KAINOS</button>
       <button data-tab="backpack" class="tab-btn mil-btn-active py-2.5 rounded-lg border border-[#31402e] bg-[#171f16] font-mono text-xs font-bold uppercase tracking-widest transition">3. KUPRINĖ // PARDUOTUVĖS</button>
     </nav>
 
-    <!-- ==================== TAB 1: KARYS 360° ==================== -->
+    <!-- ==================== TAB 1: KARYS & NEXT-BUY ADVICE ==================== -->
     <div id="tab-soldier" class="space-y-4">
 
-      <!-- Clean 8-Stage Visual Strip -->
+      <!-- NEXT PRIORITY ADVICE CARD (Auto-updates as you finish stages!) -->
+      <section id="advice-card" class="mil-card rounded-lg p-3.5 border-[#d4a63a]/70 bg-gradient-to-r from-[#192318] to-[#171f16] space-y-2.5"></section>
+
+      <!-- Active (Unfinished) Stages Strip — Finished Stages Auto-Removed! -->
       <section class="mil-card rounded-lg p-3 space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="font-mono text-xs font-bold uppercase tracking-wider text-[#d4a63a]" id="stage-header">ETAPAS 1 / 8 • BAZINIS</span>
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs font-bold uppercase tracking-wider text-[#d4a63a]" id="stage-header">ETAPAS 1 / 8</span>
+            <button id="toggle-completed-stages" class="hidden px-2 py-0.5 rounded bg-[#006a44]/30 border border-[#4ade80]/40 text-[#4ade80] font-mono text-[10px] uppercase">✓ Rodyti baigtus</button>
+          </div>
           <div class="flex items-center gap-1.5">
             <button id="btn-prev" class="w-8 h-8 rounded border border-[#31402e] bg-[#101510] font-bold text-xs active:scale-90">←</button>
-            <button id="btn-tour" class="px-2.5 h-8 rounded bg-[#d4a63a] text-[#12170e] font-mono text-[11px] font-bold uppercase active:scale-95">▶ Turas</button>
             <button id="btn-next" class="w-8 h-8 rounded border border-[#31402e] bg-[#101510] font-bold text-xs active:scale-90">→</button>
           </div>
         </div>
         <div id="stage-strip" class="flex gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
       </section>
 
-      <!-- Hero 360° Turntable + Gear Slots -->
+      <!-- Hero Viewer + Current Stage Gear Checklist -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-        <!-- Center 360° Tactical HUD Viewer -->
+        <!-- Left/Center Viewer -->
         <div class="lg:col-span-5 flex flex-col items-center space-y-2.5">
           <div id="viewer-stage" class="hud-corners relative w-full max-w-[380px] rounded-xl overflow-hidden border border-[#31402e] bg-[#141914] shadow-2xl cursor-grab active:cursor-grabbing">
             <div id="viewer-transform">
@@ -288,27 +240,25 @@
               <div id="hotspots-layer" class="absolute inset-0"></div>
             </div>
 
-            <!-- Zoom Controls -->
             <div class="absolute top-3 right-3 flex items-center gap-1 bg-black/80 border border-[#31402e] rounded-lg p-1 text-xs font-mono">
               <button id="zoom-out" class="w-8 h-8 rounded hover:bg-white/15 font-bold active:scale-90">−</button>
               <span id="zoom-readout" class="px-1 text-[11px] text-[#d4a63a]">1.0×</span>
               <button id="zoom-in" class="w-8 h-8 rounded hover:bg-white/15 font-bold active:scale-90">+</button>
             </div>
 
-            <!-- Degree Compass -->
             <div class="absolute top-3 left-3 bg-black/80 border border-[#31402e] rounded-lg px-2 py-1 text-[11px] font-mono text-[#eef2e8] flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-[#4ade80]"></span>
               <span id="angle-badge">0° PRIEKIS</span>
             </div>
 
             <div class="absolute bottom-3 left-3 right-3 bg-black/80 border border-[#31402e] rounded-lg px-2.5 py-1.5 text-[11px] font-mono flex items-center justify-between pointer-events-none">
-              <span id="photo-caption" class="truncate text-[#eef2e8]">Bazinis rinkinys</span>
-              <span class="text-[#d4a63a] shrink-0 ml-2">SUKTI 360°</span>
+              <span id="photo-caption" class="truncate text-[#eef2e8]">Bazinis</span>
+              <span id="viewer-mode-hint" class="text-[#d4a63a] shrink-0 ml-2">SUKTI 360°</span>
             </div>
           </div>
 
-          <!-- Simple 360° Turntable Bar -->
-          <div class="w-full max-w-[380px] mil-card rounded-lg p-2 space-y-2">
+          <!-- Adaptive Controls: Full 360° on Stage 1 & 8 (exact matching turnaround!), Smooth 3D Tilt & Zoom on Stages 2-7 (never swaps gear!) -->
+          <div id="controls-360" class="w-full max-w-[380px] mil-card rounded-lg p-2 space-y-2">
             <div class="flex items-center gap-2">
               <button id="btn-spin" class="px-2.5 py-1.5 rounded bg-[#1f2a1e] border border-[#31402e] font-mono text-[11px] font-bold uppercase text-[#d4a63a] active:scale-95 shrink-0">⟳ Sukti</button>
               <input id="rot-slider" type="range" min="0" max="360" value="0" class="w-full accent-[#d4a63a] cursor-pointer" />
@@ -321,39 +271,43 @@
               <button data-angle="270" class="rot-btn mil-btn-active py-1.5 rounded border border-[#31402e] bg-[#101510] font-bold">Kairė</button>
             </div>
           </div>
+
+          <div id="controls-3d-tilt" class="hidden w-full max-w-[380px] mil-card rounded-lg p-2.5 flex items-center justify-between gap-2 text-[11px] font-mono">
+            <span class="text-[#93a38c]">3D pasukimas + priartinimas (ekipuotė nesikeičia)</span>
+            <button id="btn-reset-tilt" class="px-2.5 py-1 rounded bg-[#101510] border border-[#31402e] text-[#d4a63a] font-bold shrink-0">1.0×</button>
+          </div>
         </div>
 
-        <!-- Right: This Month's Gear + Rollover Bar -->
+        <!-- Right: Active Stage Gear Checklist -->
         <div class="lg:col-span-7 space-y-3">
           <div class="mil-card rounded-lg p-3.5 space-y-3">
             <div class="flex items-center justify-between border-b border-[#31402e] pb-2">
               <div>
-                <h2 class="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider" id="month-title">MĖNUO 1 PIRKINIAI</h2>
-                <p class="text-[11px] text-[#93a38c]" id="month-sub">Spausk ant prekės norėdamas pažymėti ar įrašyti kainą</p>
+                <h2 class="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider" id="stage-items-title">ETAPO 1 EKIPUOTĖ</h2>
+                <p class="text-[11px] text-[#93a38c]">Pažymėk visus šio etapo daiktus — etapas bus užbaigtas ir pašalintas!</p>
               </div>
               <div class="text-right font-mono">
-                <div id="month-spent" class="text-sm font-bold text-[#d4a63a]">€0</div>
-                <div id="month-left" class="text-[10px] text-[#4ade80]">+€0 → kitas mėn.</div>
+                <div id="stage-cost" class="text-sm font-bold text-[#d4a63a]">€0</div>
+                <div id="stage-prog" class="text-[10px] text-[#4ade80]">0 / 5</div>
               </div>
             </div>
-            <div id="month-items" class="space-y-2"></div>
+            <div id="stage-items-list" class="space-y-2"></div>
           </div>
 
-          <!-- Compact Visual Rollover Timeline -->
+          <!-- Monthly Rollover Bar -->
           <div class="mil-card rounded-lg p-3 space-y-2">
             <div class="flex items-center justify-between text-[11px] font-mono uppercase">
               <span class="text-[#93a38c]">Mėnesių planas (€400/mėn + likutis)</span>
-              <span class="text-[#4ade80]">Spausk mėnesį</span>
+              <span id="rollover-summary" class="text-[#4ade80]">Auto-likutis</span>
             </div>
-            <div id="month-bars" class="grid grid-cols-6 sm:grid-cols-12 gap-1.5 items-end h-24 pt-1"></div>
+            <div id="month-bars" class="grid grid-cols-6 sm:grid-cols-12 gap-1.5 items-end h-20 pt-1"></div>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- ==================== TAB 2: PIRKINIAI (SIMPLE CHECKLIST) ==================== -->
+    <!-- ==================== TAB 2: PIRKINIAI ==================== -->
     <div id="tab-checklist" class="hidden space-y-3">
-      <!-- Compact Toggleable Add Bought Item -->
       <div class="mil-card rounded-lg p-3 space-y-2.5">
         <div class="flex items-center justify-between gap-2">
           <span class="font-mono text-xs font-bold uppercase tracking-wider text-[#d4a63a]">+ Pridėti jau turimą daiktą</span>
@@ -363,16 +317,15 @@
           <input id="cg-name" type="text" required placeholder="Pavadinimas (pvz. Haix batai)" class="col-span-2 sm:col-span-5 px-3 py-2 rounded bg-[#101510] border border-[#31402e] text-[#eef2e8] focus:outline-none focus:border-[#d4a63a]" />
           <input id="cg-price" type="number" min="0" inputmode="numeric" required placeholder="Kaina €" class="sm:col-span-2 px-3 py-2 rounded bg-[#101510] border border-[#31402e] font-mono text-[#eef2e8] focus:outline-none focus:border-[#d4a63a]" />
           <select id="cg-cond" class="sm:col-span-3 px-2 py-2 rounded bg-[#101510] border border-[#31402e] text-[#eef2e8]">
-            <option value="Nauja">Nauja (New)</option>
+            <option value="Nauja">Nauja</option>
             <option value="Naudota - Puiki">Naudota - Puiki</option>
-            <option value="Naudota">Naudota (Used)</option>
+            <option value="Naudota">Naudota</option>
             <option value="LŠS Išduota">LŠS Išduota (€0)</option>
           </select>
           <button type="submit" class="col-span-2 sm:col-span-2 py-2 rounded bg-[#d4a63a] text-[#12170e] font-mono font-bold uppercase active:scale-95">+ Pridėti</button>
         </form>
       </div>
 
-      <!-- Visual Filter Chips -->
       <div class="flex gap-1.5 overflow-x-auto no-scrollbar" id="cat-chips">
         <button data-cat="all" data-active="true" class="mil-btn-active px-3 py-1.5 rounded-lg border border-[#31402e] bg-[#171f16] font-mono text-[11px] font-bold uppercase shrink-0">Visi</button>
         <button data-cat="Uniform & Layers" class="mil-btn-active px-3 py-1.5 rounded-lg border border-[#31402e] bg-[#171f16] text-xs font-semibold shrink-0">🧥 Apranga</button>
@@ -385,11 +338,10 @@
         <button data-cat="Rifle Accessories" class="mil-btn-active px-3 py-1.5 rounded-lg border border-[#31402e] bg-[#171f16] text-xs font-semibold shrink-0">🔫 Ginklui</button>
       </div>
 
-      <!-- Simple Visual Gear Cards Grid -->
       <div id="checklist-grid" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
     </div>
 
-    <!-- ==================== TAB 3: KUPRINĖ & LT PARDUOTUVĖS ==================== -->
+    <!-- ==================== TAB 3: KUPRINĖ & PARDUOTUVĖS ==================== -->
     <div id="tab-backpack" class="hidden space-y-4">
       <section class="mil-card rounded-lg p-3.5 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#31402e] pb-2.5">
@@ -406,10 +358,9 @@
         <div id="backpack-groups" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
       </section>
 
-      <!-- Compact LT Shops & Backup -->
       <section class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
         <div class="mil-card rounded-lg p-3.5 space-y-2">
-          <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-[#d4a63a]">🏪 LT Parduotuvės (Nauja &amp; Naudota)</h3>
+          <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-[#d4a63a]">🏪 LT Parduotuvės</h3>
           <div class="grid grid-cols-2 gap-1.5 font-mono text-[11px]">
             <a href="https://nariams.sauliusajunga.lt" target="_blank" class="p-2 rounded bg-[#101510] border border-[#31402e] hover:border-[#d4a63a] truncate">LŠS Parduotuvė ↗</a>
             <a href="https://ebunkeris.lt" target="_blank" class="p-2 rounded bg-[#101510] border border-[#31402e] hover:border-[#d4a63a] truncate">Ebunkeris.lt ↗</a>
@@ -421,10 +372,9 @@
             <a href="https://www.skelbiu.lt" target="_blank" class="p-2 rounded bg-[#101510] border border-[#31402e] hover:border-[#d4a63a] truncate">Skelbiu / Vinted ↗</a>
           </div>
         </div>
-
         <div class="mil-card rounded-lg p-3.5 space-y-2.5">
-          <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-[#d4a63a]">💾 Atsarginė kopija &amp; Telefonas</h3>
-          <p class="text-[11px] text-[#93a38c]">Duomenys saugomi telefone. Android Chrome: spausk <strong>⋮ → Įdiegti programėlę</strong>.</p>
+          <h3 class="font-mono text-xs font-bold uppercase tracking-wider text-[#d4a63a]">💾 Atsarginė kopija</h3>
+          <p class="text-[11px] text-[#93a38c]">Duomenys saugomi telefone. Eksportuok kopiją jei keiti telefoną.</p>
           <div class="flex gap-2 font-mono text-[11px] uppercase">
             <button id="btn-export" class="px-3 py-2 rounded bg-[#d4a63a] text-[#12170e] font-bold active:scale-95">⬇ Eksportuoti</button>
             <label class="px-3 py-2 rounded bg-[#101510] border border-[#31402e] text-[#eef2e8] font-bold cursor-pointer active:scale-95">
@@ -437,10 +387,10 @@
 
   </main>
 
-  <!-- Simple 3-Button Native Android Bottom Bar -->
+  <!-- Native 3-Button Android Bottom Nav -->
   <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#141b13]/95 backdrop-blur-md border-t border-[#31402e] grid grid-cols-3 px-2 pt-1.5 pb-2">
     <button data-tab="soldier" data-active="true" class="bnav-btn flex flex-col items-center gap-0.5 text-[10px] font-mono font-bold uppercase text-[#93a38c] active:scale-95">
-      <span class="bnav-ind px-5 py-1 rounded-lg border border-transparent text-base leading-none">🪖</span><span>Karys 360°</span>
+      <span class="bnav-ind px-5 py-1 rounded-lg border border-transparent text-base leading-none">🪖</span><span>Karys</span>
     </button>
     <button data-tab="checklist" class="bnav-btn flex flex-col items-center gap-0.5 text-[10px] font-mono font-bold uppercase text-[#93a38c] active:scale-95">
       <span class="bnav-ind px-5 py-1 rounded-lg border border-transparent text-base leading-none">✅</span><span>Pirkiniai</span>
@@ -458,14 +408,14 @@
 
     const CONDITIONS = ["Nauja", "Naudota - Puiki", "Naudota", "Karinė (Surplus)", "LŠS Išduota"];
     const STAGE_META = {
-      1: { short: "1. Bazinis", cap: "Woodland BDU, kepurė, akiniai, batai" },
-      2: { short: "2. Kuprinė", cap: "+35L kuprinė, TCCC IFAK + CAT7, įrankiai" },
-      3: { short: "3. Lowa GTX", cap: "+LOWA Zephyr GTX batai, antbačiai, flisas" },
-      4: { short: "4. Diržas", cap: "+Karo diržas, Chest Rig, ginklo diržas" },
-      5: { short: "5. 80L Žygio", cap: "+80L kuprinė, miegmaišis, Gore-Tex" },
-      6: { short: "6. Šarvai", cap: "+Plate Carrier, MCDU, Sordin, racija" },
-      7: { short: "7. Šalmas", cap: "+NIJ IV plokštės, 2× TQ, FAST šalmas" },
-      8: { short: "8. Pilnas", cap: "+Šalmo uždangalas, kolimatorius, žibintuvėlis" }
+      1: { short: "1. Bazinis", cap: "Woodland BDU, kepurė, akiniai, batai", rot360: true, tip: "Pradėk nuo uniformos ir apsauginių akinių — be jų negalėsi dalyvauti šaudymo pratybose." },
+      2: { short: "2. Kuprinė", cap: "+35L kuprinė, TCCC IFAK + CAT7, įrankiai", rot360: false, tip: "IFAK (CAT Gen7) pirk TIK naują iš TakMedCentras.lt — padirbtas turniketas lūžta!" },
+      3: { short: "3. Lowa GTX", cap: "+LOWA Zephyr GTX batai, antbačiai, flisas", rot360: false, tip: "Geri Gore-Tex batai ir merino sluoksniai išgelbės kojas per 30km žygius." },
+      4: { short: "4. Diržas", cap: "+Karo diržas, Chest Rig, ginklo diržas", rot360: false, tip: "Matuza Tactical (lietuviškas!) karo diržas + Chest Rig leidžia patogiai nešti dėtuves ir IFAK." },
+      5: { short: "5. 80L Žygio", cap: "+80L kuprinė, miegmaišis, Gore-Tex", rot360: false, tip: "Carinthia Defence 4 + 80L kuprinė ir Gore-Tex dažnai randami 40% pigiau Skelbiu / MaratonShop." },
+      6: { short: "6. Šarvai", cap: "+Plate Carrier, MCDU, Sordin, racija", rot360: false, tip: "Sordin aktyvios ausinės saugo klausą ir leidžia girdėti komandas; MCDU marškiniai neleidžia perkaisti po šarvais." },
+      7: { short: "7. Šalmas", cap: "+NIJ IV plokštės, 2× TQ, FAST šalmas", rot360: false, tip: "NIJ IV keramikos plokštes pirk po vieną (2 mėn.) ir TIK naujas — mikroįtrūkimų plika akimi nesimato!" },
+      8: { short: "8. Pilnas", cap: "+Šalmo uždangalas, kolimatorius, žibintuvėlis", rot360: true, tip: "Paskutinis žingsnis: Woodland uždangalas maskuotei + Holosun kolimatorius ir ginklo žibintuvėlis nakčiai." }
     };
     const HOTSPOTS = [
       { slot: "head", x: 50, y: 12 }, { slot: "eyepro", x: 54, y: 16 },
@@ -474,58 +424,55 @@
       { slot: "pack", x: 69, y: 24 }, { slot: "boots", x: 58, y: 89 }
     ];
 
+    // Each item explicitly belongs to stage 1..8 so finishing a stage removes it automatically!
     const BASE_GEAR_ITEMS = [
-      { id: "m1-uni", baseMonth: 1, slot: "uniform", pic: "uniform", src: "MilitarijaPlius.lt", category: "Uniform & Layers", name: "LŠS Woodland uniforma (švarkas + kelnės)", brand: "Helikon-Tex BDU Mk2 / LŠS Rip-Stop", priceNew: 135, priceUsed: 75, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "TacticalShop", url: "https://tacticalshop.lt/lss-apranga" }, { label: "LŠS Shop", url: "https://nariams.sauliusajunga.lt/c/uniformine-apranga/" }] },
-      { id: "m1-patch", baseMonth: 1, slot: "head", pic: "beret", src: "nariams.sauliusajunga.lt", category: "Uniform & Layers", name: "LŠS beretė, kepurė ir statutiniai antsiuvai", brand: "60×35mm skydas, 30×50mm vėliava", priceNew: 45, priceUsed: 35, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "LŠS Shop", url: "https://nariams.sauliusajunga.lt/c/uniformine-apranga/" }] },
-      { id: "m1-boots", baseMonth: 1, slot: "boots", pic: "surplus_boots", src: "Army-Shop.lt", category: "Footwear", name: "Pradiniai kerziniai batai (Surplus)", brand: "BW / NATO odiniai (iki Lowa)", priceNew: 65, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "MaratonShop", url: "https://www.maratonshop.lt/taktinis-centras/naudota-ekipuote" }] },
-      { id: "m1-gloves", baseMonth: 1, slot: "uniform", pic: "gloves", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Taktinės pirštinės + Merino kojinės (3×)", brand: "Mechanix Original + Merino", priceNew: 65, priceUsed: 50, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m1-eyepro", baseMonth: 1, slot: "eyepro", pic: "eyepro", src: "Ebunkeris.lt", category: "Ballistic Armor", name: "Balistiniai akiniai (ANSI Z87.1) + kištukai", brand: "SwissEye Lancer / ESS Crossbow", priceNew: 65, priceUsed: 65, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m1-uni", stage: 1, baseMonth: 1, slot: "uniform", pic: "uniform", src: "MilitarijaPlius.lt", category: "Uniform & Layers", name: "LŠS Woodland uniforma (švarkas + kelnės)", brand: "Helikon-Tex BDU Mk2 / LŠS Rip-Stop", tip: "Gali pirkti naudotą Vinted/Skelbiu (~€75) ir sutaupyti €60.", priceNew: 135, priceUsed: 75, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "TacticalShop", url: "https://tacticalshop.lt/lss-apranga" }, { label: "LŠS Shop", url: "https://nariams.sauliusajunga.lt/c/uniformine-apranga/" }] },
+      { id: "m1-patch", stage: 1, baseMonth: 1, slot: "head", pic: "beret", src: "nariams.sauliusajunga.lt", category: "Uniform & Layers", name: "LŠS beretė, kepurė ir statutiniai antsiuvai", brand: "60×35mm skydas, 30×50mm vėliava", tip: "Pirk oficialioje LŠS parduotuvėje po priesaikos.", priceNew: 45, priceUsed: 35, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "LŠS Shop", url: "https://nariams.sauliusajunga.lt/c/uniformine-apranga/" }] },
+      { id: "m1-boots", stage: 1, baseMonth: 1, slot: "boots", pic: "surplus_boots", src: "Army-Shop.lt", category: "Footwear", name: "Pradiniai kerziniai batai (Surplus)", brand: "BW / NATO odiniai (iki Lowa)", tip: "Jei jau turi tvirtus žygio batus — pažymėk LŠS/Turima ir pereik tiesiai prie Lowa 3 etape!", priceNew: 65, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "MaratonShop", url: "https://www.maratonshop.lt/taktinis-centras/naudota-ekipuote" }] },
+      { id: "m1-gloves", stage: 1, baseMonth: 1, slot: "uniform", pic: "gloves", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Taktinės pirštinės + Merino kojinės (3×)", brand: "Mechanix Original + Merino", tip: "3 poros merino kojinių yra privaloma bazė be pūslių.", priceNew: 65, priceUsed: 50, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m1-eyepro", stage: 1, baseMonth: 1, slot: "eyepro", pic: "eyepro", src: "Ebunkeris.lt", category: "Ballistic Armor", name: "Balistiniai akiniai (ANSI Z87.1) + kištukai", brand: "SwissEye Lancer / ESS Crossbow", tip: "Pirk TIK naujus nesubraižytus su ANSI Z87.1 sertifikatu!", priceNew: 65, priceUsed: 65, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
 
-      { id: "m2-ifak", baseMonth: 2, slot: "belt", pic: "ifak", src: "TakMedCentras.lt", category: "Medical (IFAK)", name: "Pilnas TCCC IFAK rinkinys + dėklas", brand: "CAT Gen7 TQ, Izraelio tvarstis, Chest Seal", priceNew: 135, priceUsed: 135, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "TakMedCentras", url: "https://takmedcentras.lt/products/ifak" }] },
-      { id: "m2-pack", baseMonth: 2, slot: "pack", pic: "daypack", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "35L taktinė dienos kuprinė", brand: "Helikon-Tex EDC / Ratel Mk2", priceNew: 90, priceUsed: 50, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m2-compass", baseMonth: 2, slot: "belt", pic: "compass", src: "Ebunkeris.lt", category: "Comms & Nav", name: "Karinis kompasas + žemėlapio dėklas", brand: "SILVA 16DCL-360/6400 + užrašinė", priceNew: 45, priceUsed: 28, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Navigacija ir įrankiai", weightG: 140 } },
-      { id: "m2-knife", baseMonth: 2, slot: "belt", pic: "knife", src: "Ebunkeris.lt", category: "Comms & Nav", name: "Lauko peilis + Multitool + raudonas žibintuvėlis", brand: "Glock FM81 / Morakniv + Mil-Tec", priceNew: 55, priceUsed: 35, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Navigacija ir įrankiai", weightG: 480 } },
-      { id: "m2-stove", baseMonth: 2, slot: "pack", pic: "stove", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Lauko virtuvė: viryklė, 1L gertuvė, puodelis", brand: "Mil-Tec Spider + Helikon 1L + Micropur", priceNew: 40, priceUsed: 25, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Vanduo ir maistas", weightG: 560 } },
-      { id: "m2-poncho", baseMonth: 2, slot: "pack", pic: "poncho", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Pončas / tentas + 15m parakordas", brand: "M-Tac / Helikon USGI Ripstop", priceNew: 35, priceUsed: 22, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Nakvynė ir priedanga", weightG: 520 } },
+      { id: "m2-ifak", stage: 2, baseMonth: 2, slot: "belt", pic: "ifak", src: "TakMedCentras.lt", category: "Medical (IFAK)", name: "Pilnas TCCC IFAK rinkinys + dėklas", brand: "CAT Gen7 TQ, Izraelio tvarstis, Chest Seal", tip: "SVARBIAUSIAS PIRKINYS: pirk TIK naują iš TakMedCentras.lt.", priceNew: 135, priceUsed: 135, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "TakMedCentras", url: "https://takmedcentras.lt/products/ifak" }] },
+      { id: "m2-pack", stage: 2, baseMonth: 2, slot: "pack", pic: "daypack", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "35L taktinė dienos kuprinė", brand: "Helikon-Tex EDC / Ratel Mk2", tip: "Puikiai tinka naudota (~€50) iš Skelbiu arba LŠS turgelio.", priceNew: 90, priceUsed: 50, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m2-compass", stage: 2, baseMonth: 2, slot: "belt", pic: "compass", src: "Ebunkeris.lt", category: "Comms & Nav", name: "Karinis kompasas + žemėlapio dėklas", brand: "SILVA 16DCL-360/6400 + užrašinė", tip: "Būtina topografijos pratyboms su 6400 mil skale.", priceNew: 45, priceUsed: 28, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Navigacija ir įrankiai", weightG: 140 } },
+      { id: "m2-knife", stage: 2, baseMonth: 2, slot: "belt", pic: "knife", src: "Ebunkeris.lt", category: "Comms & Nav", name: "Lauko peilis + Multitool + raudonas žibintuvėlis", brand: "Glock FM81 / Morakniv + Mil-Tec", tip: "Žibintuvėlis PRIVALO turėti raudoną šviesą naktinėms pratyboms.", priceNew: 55, priceUsed: 35, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Navigacija ir įrankiai", weightG: 480 } },
+      { id: "m2-stove", stage: 2, baseMonth: 2, slot: "pack", pic: "stove", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Lauko virtuvė: viryklė, 1L gertuvė, puodelis", brand: "Mil-Tec Spider + Helikon 1L + Micropur", tip: "Plieninis puodelis + Nalgene 1L tarnauja dešimtmetį.", priceNew: 40, priceUsed: 25, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Vanduo ir maistas", weightG: 560 } },
+      { id: "m2-poncho", stage: 2, baseMonth: 2, slot: "pack", pic: "poncho", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Pončas / tentas + 15m parakordas", brand: "M-Tac / Helikon USGI Ripstop", tip: "Tarnauja tiek nuo lietaus, tiek kaip greita pastogė miške.", priceNew: 35, priceUsed: 22, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Nakvynė ir priedanga", weightG: 520 } },
 
-      { id: "m3-lowa", baseMonth: 3, slot: "boots", pic: "lowa_boots", src: "Army-Shop.lt", category: "Footwear", name: "LOWA Zephyr MK2 GTX Mid batai", brand: "Rudi / Juodi Gore-Tex (statutiniai)", priceNew: 190, priceUsed: 115, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Army-Shop", url: "https://www.army-shop.lt" }, { label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt" }] },
-      { id: "m3-merino", baseMonth: 3, slot: "uniform", pic: "merino", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Merino termo apranga (viršus + apačia)", brand: "200g/m² Merino vilna", priceNew: 105, priceUsed: 75, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Atsarginiai rūbai (Drybag)", weightG: 420 } },
-      { id: "m3-fleece", baseMonth: 3, slot: "uniform", pic: "fleece", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Samanų spalvos flisas + žieminė kepuraitė", brand: "Helikon-Tex Alpha Tactical", priceNew: 65, priceUsed: 35, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Atsarginiai rūbai (Drybag)", weightG: 610 } },
-      { id: "m3-gaiters", baseMonth: 3, slot: "boots", pic: "gaiters", src: "Ebunkeris.lt", category: "Footwear", name: "Neperšlampami antbačiai + pėdų priežiūra", brand: "Helikon-Tex Snowfall + Compeed", priceNew: 40, priceUsed: 25, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Higiena ir priežiūra", weightG: 310 } },
+      { id: "m3-lowa", stage: 3, baseMonth: 3, slot: "boots", pic: "lowa_boots", src: "Army-Shop.lt", category: "Footwear", name: "LOWA Zephyr MK2 GTX Mid batai", brand: "Rudi / Juodi Gore-Tex (statutiniai)", tip: "Pirk naujus ir pasimatuok parduotuvėje — svarbiausia investicija komfortui.", priceNew: 190, priceUsed: 115, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Army-Shop", url: "https://www.army-shop.lt" }, { label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt" }] },
+      { id: "m3-merino", stage: 3, baseMonth: 3, slot: "uniform", pic: "merino", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Merino termo apranga (viršus + apačia)", brand: "200g/m² Merino vilna", tip: "Šildo net sušlapus ir nesugeria kvapo 3 dienų pratybose.", priceNew: 105, priceUsed: 75, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Atsarginiai rūbai (Drybag)", weightG: 420 } },
+      { id: "m3-fleece", stage: 3, baseMonth: 3, slot: "uniform", pic: "fleece", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Samanų spalvos flisas + žieminė kepuraitė", brand: "Helikon-Tex Alpha Tactical", tip: "Gali lengvai rasti naudotą Vinted (~€35).", priceNew: 65, priceUsed: 35, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Atsarginiai rūbai (Drybag)", weightG: 610 } },
+      { id: "m3-gaiters", stage: 3, baseMonth: 3, slot: "boots", pic: "gaiters", src: "Ebunkeris.lt", category: "Footwear", name: "Neperšlampami antbačiai + pėdų priežiūra", brand: "Helikon-Tex Snowfall + Compeed", tip: "Apsaugo kelnes ir batus nuo šlapios žolės bei sniego.", priceNew: 40, priceUsed: 25, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Higiena ir priežiūra", weightG: 310 } },
 
-      { id: "m4-belt", baseMonth: 4, slot: "belt", pic: "belt", src: "MilitaryOutdoor.lt", category: "Load Bearing", name: "Karo diržas (vidinis + išorinis Cobra)", brand: "Matuza Tactical Mod.2 (Lietuva)", priceNew: 105, priceUsed: 65, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }, { label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt" }] },
-      { id: "m4-pouches", baseMonth: 4, slot: "belt", pic: "pouch", src: "MilitaryOutdoor.lt", category: "Load Bearing", name: "Diržo krepšeliai (2× dėtuvėms, dump, utility)", brand: "Matuza Tactical Woodland", priceNew: 95, priceUsed: 55, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt" }] },
-      { id: "m4-rig", baseMonth: 4, slot: "armor", pic: "chestrig", src: "Ebunkeris.lt", category: "Load Bearing", name: "Krūtinės platforma Chest Rig (4× dėtuvės)", brand: "Helikon-Tex Guardian Recce", priceNew: 135, priceUsed: 80, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m4-sling", baseMonth: 4, slot: "rifle", pic: "sling", src: "Ebunkeris.lt", category: "Rifle Accessories", name: "2 taškų ginklo diržas + valymo rinkinys", brand: "Magpul MS1/MS4 + Boresnake + CLP", priceNew: 65, priceUsed: 40, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Higiena ir priežiūra", weightG: 260 } },
+      { id: "m4-belt", stage: 4, baseMonth: 4, slot: "belt", pic: "belt", src: "MilitaryOutdoor.lt", category: "Load Bearing", name: "Karo diržas (vidinis + išorinis Cobra)", brand: "Matuza Tactical Mod.2 (Lietuva)", tip: "Lietuviškas Matuza Tactical — patikrintas kariuomenėje, klausk LŠS nuolaidos!", priceNew: 105, priceUsed: 65, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }, { label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt" }] },
+      { id: "m4-pouches", stage: 4, baseMonth: 4, slot: "belt", pic: "pouch", src: "MilitaryOutdoor.lt", category: "Load Bearing", name: "Diržo krepšeliai (2× dėtuvėms, dump, utility)", brand: "Matuza Tactical Woodland", tip: "Naudoti MOLLE krepšeliai tarnauja taip pat kaip nauji.", priceNew: 95, priceUsed: 55, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt" }] },
+      { id: "m4-rig", stage: 4, baseMonth: 4, slot: "armor", pic: "chestrig", src: "Ebunkeris.lt", category: "Load Bearing", name: "Krūtinės platforma Chest Rig (4× dėtuvės)", brand: "Helikon-Tex Guardian Recce", tip: "Idealu žvalgybai ir pratyboms kol dar neturi Plate Carrier.", priceNew: 135, priceUsed: 80, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m4-sling", stage: 4, baseMonth: 4, slot: "rifle", pic: "sling", src: "Ebunkeris.lt", category: "Rifle Accessories", name: "2 taškų ginklo diržas + valymo rinkinys", brand: "Magpul MS1/MS4 + Boresnake + CLP", tip: "Greito reguliavimo 2 taškų diržas tinka ir išduotam, ir asmeniniam ginklui.", priceNew: 65, priceUsed: 40, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Higiena ir priežiūra", weightG: 260 } },
 
-      { id: "m5-bag", baseMonth: 5, slot: "pack", pic: "sleep", src: "Lamnia.com (LT)", category: "Backpack & Sleep", name: "3 sezonų karinis miegmaišis (-15°C)", brand: "Carinthia Defence 4 Woodland", priceNew: 230, priceUsed: 140, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Lamnia.com", url: "https://www.lamnia.com/lt/br/89/carinthia-sleeping-bags-and-jackets" }] , pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 1850 } },
-      { id: "m5-pad", baseMonth: 5, slot: "pack", pic: "pad", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Izoliacinis kilimėlis + sėdimas kilimėlis", brand: "M-Tac / Therm-a-Rest Z-Lite", priceNew: 50, priceUsed: 28, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 480 } },
-      { id: "m5-bivvy", baseMonth: 5, slot: "pack", pic: "drybag", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Gore-Tex Bivvy maišas + 3× Drybag maišai", brand: "Karinis Gore-Tex + 5L/10L/20L", priceNew: 85, priceUsed: 55, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "MaratonShop", url: "https://www.maratonshop.lt/taktinis-centras/naudota-ekipuote" }], pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 980 } },
-      { id: "m5-shovel", baseMonth: 5, slot: "pack", pic: "shovel", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Sulankstomas kastuvėlis + maskavimo dažai", brand: "Mil-Tec Gen.II + 3 spalvų grimas", priceNew: 35, priceUsed: 22, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Navigacija ir įrankiai", weightG: 1050 } },
+      { id: "m5-bag", stage: 5, baseMonth: 5, slot: "pack", pic: "sleep", src: "Lamnia.com (LT)", category: "Backpack & Sleep", name: "3 sezonų karinis miegmaišis (-15°C)", brand: "Carinthia Defence 4 Woodland", tip: "Auksinis Lietuvos karių standartas — Skelbiu būna už €130–150.", priceNew: 230, priceUsed: 140, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Lamnia.com", url: "https://www.lamnia.com/lt/br/89/carinthia-sleeping-bags-and-jackets" }], pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 1850 } },
+      { id: "m5-pad", stage: 5, baseMonth: 5, slot: "pack", pic: "pad", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Izoliacinis kilimėlis + sėdimas kilimėlis", brand: "M-Tac / Therm-a-Rest Z-Lite", tip: "Putų kilimėlis niekada nepradurs miške ant šakų.", priceNew: 50, priceUsed: 28, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 480 } },
+      { id: "m5-bivvy", stage: 5, baseMonth: 5, slot: "pack", pic: "drybag", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Gore-Tex Bivvy maišas + 3× Drybag maišai", brand: "Karinis Gore-Tex + 5L/10L/20L", tip: "Pirk karinį surplus (olandų/BW) MaratonShop už pusę kainos.", priceNew: 85, priceUsed: 55, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "MaratonShop", url: "https://www.maratonshop.lt/taktinis-centras/naudota-ekipuote" }], pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 980 } },
+      { id: "m5-shovel", stage: 5, baseMonth: 5, slot: "pack", pic: "shovel", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "Sulankstomas kastuvėlis + maskavimo dažai", brand: "Mil-Tec Gen.II + 3 spalvų grimas", tip: "Būtinas apkaso išsikasimui per kovines pratybas.", priceNew: 35, priceUsed: 22, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Navigacija ir įrankiai", weightG: 1050 } },
+      { id: "m6-ruck", stage: 5, baseMonth: 6, slot: "pack", pic: "rucksack", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "65–85L žygio kuprinė + apsauga nuo lietaus", brand: "Tasmanian Tiger Raid / Berghaus", tip: "Naudota Berghaus Atlas (~€130) yra neužmušama.", priceNew: 240, priceUsed: 130, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }, { label: "MaratonShop", url: "https://www.maratonshop.lt/taktinis-centras/naudota-ekipuote" }], pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 2600 } },
+      { id: "m6-shell", stage: 5, baseMonth: 6, slot: "uniform", pic: "hardshell", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Gore-Tex neperšlampamas kostiumas (Hardshell)", brand: "Helikon Squall / Surplus MVP", tip: "Surplus britiškas MVP arba Helikon Squall puikiai laiko lietų.", priceNew: 160, priceUsed: 85, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Atsarginiai rūbai (Drybag)", weightG: 890 } },
 
-      { id: "m6-ruck", baseMonth: 6, slot: "pack", pic: "rucksack", src: "Ebunkeris.lt", category: "Backpack & Sleep", name: "65–85L žygio kuprinė + apsauga nuo lietaus", brand: "Tasmanian Tiger Raid / Berghaus", priceNew: 240, priceUsed: 130, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }, { label: "MaratonShop", url: "https://www.maratonshop.lt/taktinis-centras/naudota-ekipuote" }], pack: { bag: "ruck", group: "Nakvynė ir priedanga", weightG: 2600 } },
-      { id: "m6-shell", baseMonth: 6, slot: "uniform", pic: "hardshell", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Gore-Tex neperšlampamas kostiumas (Hardshell)", brand: "Helikon Squall / Surplus MVP", priceNew: 160, priceUsed: 85, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Atsarginiai rūbai (Drybag)", weightG: 890 } },
+      { id: "m7-earpro", stage: 6, baseMonth: 7, slot: "eyepro", pic: "earpro", src: "BalticShooter.lt", category: "Comms & Nav", name: "Aktyvios klausos apsaugos ausinės", brand: "Sordin Supreme Pro-X (Gel)", tip: "Geriausias kainos/kokybės pasirinkimas — vėliau montuosi ant šalmo!", priceNew: 245, priceUsed: 165, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "BalticShooter", url: "https://balticshooter.lt/sordin-aktyvios-ausines-supreme-mil-cc-3-slim" }, { label: "TacticalForce", url: "https://tacticalforce.lt/brand/sordin" }] },
+      { id: "m7-radio", stage: 6, baseMonth: 7, slot: "armor", pic: "radio", src: "Ebunkeris.lt", category: "Comms & Nav", name: "VHF/UHF racija + ilga antena + dėklas", brand: "Baofeng UV-9R / padalinio standartas", tip: "Prieš perkant pasitikslink dažnius ir modelį savo kuopoje!", priceNew: 70, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m7-ptt", stage: 6, baseMonth: 7, slot: "armor", pic: "headlamp", src: "Ebunkeris.lt", category: "Comms & Nav", name: "PTT mygtukas + 20,000mAh Powerbank", brand: "Earmor/Nexus PTT + baterijos", tip: "Sujungia raciją su Sordin ausinėmis greitam ryšiui.", priceNew: 70, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "TacticalForce", url: "https://tacticalforce.lt" }], pack: { bag: "daypack", group: "Navigacija ir įrankiai", weightG: 390 } },
+      { id: "m8-pc", stage: 6, baseMonth: 8, slot: "armor", pic: "pc", src: "Ebunkeris.lt", category: "Ballistic Armor", name: "Šarvinė liemenė Plate Carrier (Quick-Release)", brand: "M-Tac Cuirass FAST Gen.II Ranger Green", tip: "Rinkis su greito nusegimo (ROC) sagtimis — greita pagalba sužeidus.", priceNew: 220, priceUsed: 140, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m8-placard", stage: 6, baseMonth: 8, slot: "armor", pic: "canteen", src: "Ebunkeris.lt", category: "Load Bearing", name: "3× dėtuvių panelė + 3L hidratacijos sistema", brand: "Source 3L + Templars Gear / Matuza", tip: "Source 3L pūslė neskleidžia plastiko skonio ir nesprogsta.", priceNew: 105, priceUsed: 65, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Vanduo ir maistas", weightG: 280 } },
+      { id: "m8-shirt", stage: 6, baseMonth: 8, slot: "uniform", pic: "mcdu_shirt", src: "FighterShop.lt", category: "Uniform & Layers", name: "Koviniai marškinėliai po šarvais (Combat Shirt)", brand: "Helikon-Tex MCDU Woodland", tip: "Kvėpuojantis liemuo po šarvine liemene — nepakeičiama vasarą.", priceNew: 75, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "FighterShop", url: "https://www.fightershop.lt/tactical/lss-apranga" }] },
 
-      { id: "m7-earpro", baseMonth: 7, slot: "eyepro", pic: "earpro", src: "BalticShooter.lt", category: "Comms & Nav", name: "Aktyvios klausos apsaugos ausinės", brand: "Sordin Supreme Pro-X (Gel)", priceNew: 245, priceUsed: 165, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "BalticShooter", url: "https://balticshooter.lt/sordin-aktyvios-ausines-supreme-mil-cc-3-slim" }, { label: "TacticalForce", url: "https://tacticalforce.lt/brand/sordin" }] },
-      { id: "m7-radio", baseMonth: 7, slot: "armor", pic: "radio", src: "Ebunkeris.lt", category: "Comms & Nav", name: "VHF/UHF racija + ilga antena + dėklas", brand: "Baofeng UV-9R / padalinio standartas", priceNew: 70, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m7-ptt", baseMonth: 7, slot: "armor", pic: "headlamp", src: "Ebunkeris.lt", category: "Comms & Nav", name: "PTT mygtukas + 20,000mAh Powerbank", brand: "Earmor/Nexus PTT + baterijos", priceNew: 70, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "TacticalForce", url: "https://tacticalforce.lt" }], pack: { bag: "daypack", group: "Navigacija ir įrankiai", weightG: 390 } },
+      { id: "m9-plate1", stage: 7, baseMonth: 9, slot: "armor", pic: "plate", src: "TakMedCentras.lt", category: "Ballistic Armor", name: "Priekinė balistinė plokštė NIJ IV Standalone", brand: "25×30cm SAPI keramika (1 iš 2)", tip: "PIRK TIK NAUJĄ su sertifikatu — telpa į €400/mėn perkant po vieną!", priceNew: 250, priceUsed: 250, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt/produkto-kategorija/ekipuote/apsaugos-priemones/" }] },
+      { id: "m9-trauma", stage: 7, baseMonth: 9, slot: "armor", pic: "plate_sigma", src: "MilitaryOutdoor.lt", category: "Ballistic Armor", name: "Antitrauminiai įdėklai + pečių paminkštinimai", brand: "M-Tac / Direct Action", tip: "Mažina smūgio traumą ir svorio spaudimą pečiams.", priceNew: 60, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m9-tq2", stage: 7, baseMonth: 9, slot: "belt", pic: "tq", src: "TakMedCentras.lt", category: "Medical (IFAK)", name: "2-as CAT Gen7 turniketas + dėklas + tvarstis", brand: "North American Rescue (originalus)", tip: "Vienas turniketas ant diržo, antras ant liemenės — pasiekiamas abiem rankom.", priceNew: 70, priceUsed: 70, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "TakMedCentras", url: "https://takmedcentras.lt/products/cat-turniketas-gen-7" }] },
+      { id: "m10-plate2", stage: 7, baseMonth: 10, slot: "armor", pic: "plate_sigma", src: "MilitaryOutdoor.lt", category: "Ballistic Armor", name: "Nugarinė balistinė plokštė NIJ IV Standalone", brand: "25×30cm SAPI keramika (2 iš 2)", tip: "Užbaigia pilną priekio + nugaros NIJ IV apsaugą.", priceNew: 250, priceUsed: 250, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt/produkto-kategorija/ekipuote/apsaugos-priemones/" }] },
+      { id: "m10-lvl7", stage: 7, baseMonth: 10, slot: "uniform", pic: "level7", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Žieminė striukė stovėjimui (Level 7)", brand: "Helikon-Tex Level 7 Climashield", tip: "Užsivelkama ant šarvų stovint sargyboje prie -15°C.", priceNew: 150, priceUsed: 95, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Atsarginiai rūbai (Drybag)", weightG: 860 } },
+      { id: "m11-helmet", stage: 7, baseMonth: 11, slot: "head", pic: "helmet", src: "MilitaryOutdoor.lt", category: "Ballistic Armor", name: "Balistinis šalmas FAST — NIJ IIIA", brand: "Masada Armour FAST (€399) / PGD ARCH", tip: "Masada FAST (€399) telpa į 1 mėn. biudžetą; su likučiu gali imti PGD ARCH (€550)!", priceNew: 399, priceUsed: 330, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt/produkto-kategorija/ekipuote/salmai/" }] },
 
-      { id: "m8-pc", baseMonth: 8, slot: "armor", pic: "pc", src: "Ebunkeris.lt", category: "Ballistic Armor", name: "Šarvinė liemenė Plate Carrier (Quick-Release)", brand: "M-Tac Cuirass FAST Gen.II Ranger Green", priceNew: 220, priceUsed: 140, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m8-placard", baseMonth: 8, slot: "armor", pic: "canteen", src: "Ebunkeris.lt", category: "Load Bearing", name: "3× dėtuvių panelė + 3L hidratacijos sistema", brand: "Source 3L + Templars Gear / Matuza", priceNew: 105, priceUsed: 65, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "daypack", group: "Vanduo ir maistas", weightG: 280 } },
-      { id: "m8-shirt", baseMonth: 8, slot: "uniform", pic: "mcdu_shirt", src: "FighterShop.lt", category: "Uniform & Layers", name: "Koviniai marškinėliai po šarvais (Combat Shirt)", brand: "Helikon-Tex MCDU Woodland", priceNew: 75, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "FighterShop", url: "https://www.fightershop.lt/tactical/lss-apranga" }] },
-
-      { id: "m9-plate1", baseMonth: 9, slot: "armor", pic: "plate", src: "TakMedCentras.lt", category: "Ballistic Armor", name: "Priekinė balistinė plokštė NIJ IV Standalone", brand: "25×30cm SAPI keramika (1 iš 2)", priceNew: 250, priceUsed: 250, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt/produkto-kategorija/ekipuote/apsaugos-priemones/" }] },
-      { id: "m9-trauma", baseMonth: 9, slot: "armor", pic: "plate_sigma", src: "MilitaryOutdoor.lt", category: "Ballistic Armor", name: "Antitrauminiai įdėklai + pečių paminkštinimai", brand: "M-Tac / Direct Action", priceNew: 60, priceUsed: 45, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m9-tq2", baseMonth: 9, slot: "belt", pic: "tq", src: "TakMedCentras.lt", category: "Medical (IFAK)", name: "2-as CAT Gen7 turniketas + dėklas + tvarstis", brand: "North American Rescue (originalus)", priceNew: 70, priceUsed: 70, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "TakMedCentras", url: "https://takmedcentras.lt/products/cat-turniketas-gen-7" }] },
-
-      { id: "m10-plate2", baseMonth: 10, slot: "armor", pic: "plate_sigma", src: "MilitaryOutdoor.lt", category: "Ballistic Armor", name: "Nugarinė balistinė plokštė NIJ IV Standalone", brand: "25×30cm SAPI keramika (2 iš 2)", priceNew: 250, priceUsed: 250, hybridUseUsed: false, safetyNewOnly: true, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt/produkto-kategorija/ekipuote/apsaugos-priemones/" }] },
-      { id: "m10-lvl7", baseMonth: 10, slot: "uniform", pic: "level7", src: "Ebunkeris.lt", category: "Uniform & Layers", name: "Žieminė striukė stovėjimui (Level 7)", brand: "Helikon-Tex Level 7 Climashield", priceNew: 150, priceUsed: 95, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }], pack: { bag: "ruck", group: "Atsarginiai rūbai (Drybag)", weightG: 860 } },
-
-      { id: "m11-helmet", baseMonth: 11, slot: "head", pic: "helmet", src: "MilitaryOutdoor.lt", category: "Ballistic Armor", name: "Balistinis šalmas FAST — NIJ IIIA", brand: "Masada Armour FAST (arba naud. PGD)", priceNew: 399, priceUsed: 330, hybridUseUsed: false, safetyNewOnly: false, shops: [{ label: "MilitaryOutdoor", url: "https://militaryoutdoor.lt/produkto-kategorija/ekipuote/salmai/" }] },
-
-      { id: "m12-hkit", baseMonth: 12, slot: "head", pic: "camo_paint", src: "Ebunkeris.lt", category: "Ballistic Armor", name: "Woodland šalmo uždangalas + ARC adapteriai", brand: "Invader Gear + Sordin ARC", priceNew: 85, priceUsed: 55, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m12-light", baseMonth: 12, slot: "rifle", pic: "weapon_light", src: "Ebunkeris.lt", category: "Rifle Accessories", name: "Ginklo prožektorius (1000 lm)", brand: "Streamlight ProTac / Fenix GL", priceNew: 120, priceUsed: 75, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
-      { id: "m12-optic", baseMonth: 12, slot: "rifle", pic: "optic", src: "BalticShooter.lt", category: "Rifle Accessories", name: "Kolimatorius (2 MOA, Shake Awake)", brand: "Holosun HS403R / HS403B", priceNew: 185, priceUsed: 120, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "BalticShooter", url: "https://balticshooter.lt/holosun-kolimatorius" }] }
+      { id: "m12-hkit", stage: 8, baseMonth: 12, slot: "head", pic: "camo_paint", src: "Ebunkeris.lt", category: "Ballistic Armor", name: "Woodland šalmo uždangalas + ARC adapteriai", brand: "Invader Gear + Sordin ARC", tip: "Panaikina šalmo blizgesį ir pritvirtina Sordin tiesiai prie bėgelių.", priceNew: 85, priceUsed: 55, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m12-light", stage: 8, baseMonth: 12, slot: "rifle", pic: "weapon_light", src: "Ebunkeris.lt", category: "Rifle Accessories", name: "Ginklo prožektorius (1000 lm)", brand: "Streamlight ProTac / Fenix GL", tip: "Būtinas pastatų šturmui ir taikinių atpažinimui tamsoje.", priceNew: 120, priceUsed: 75, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "Ebunkeris.lt", url: "https://ebunkeris.lt" }] },
+      { id: "m12-optic", stage: 8, baseMonth: 12, slot: "rifle", pic: "optic", src: "BalticShooter.lt", category: "Rifle Accessories", name: "Kolimatorius (2 MOA, Shake Awake)", brand: "Holosun HS403R / HS403B", tip: "50,000 val. baterija — idealus greitam taikymuisi iki 300m.", priceNew: 185, priceUsed: 120, hybridUseUsed: true, safetyNewOnly: false, shops: [{ label: "BalticShooter", url: "https://balticshooter.lt/holosun-kolimatorius" }] }
     ];
 
     const BACKPACK_EXTRAS = [
@@ -533,7 +480,7 @@
       { id: "bp-water", name: "2L geriamojo vandens (pūslė + 1L gertuvė)", brand: "+ Micropur tabletės", pic: "canteen", src: "Ebunkeris.lt", bag: "daypack", group: "Vanduo ir maistas", weightG: 2000 },
       { id: "bp-hygiene", name: "Drėgnos servetėlės, TP (Ziploc), šepetėlis", brand: "Neperšlampamame maišelyje", pic: "drybag", src: "Ebunkeris.lt", bag: "daypack", group: "Higiena ir priežiūra", weightG: 180 },
       { id: "bp-socks", name: "2× sausos Merino kojinės + apatiniai", brand: "Drybag maiše žygiams", pic: "merino", src: "Ebunkeris.lt", bag: "daypack", group: "Atsarginiai rūbai (Drybag)", weightG: 240 },
-      { id: "bp-repair", name: "Užtrauktukai (zip-ties), lipni juosta, šiukšlių maišas", brand: "Skubus remontas ir kuprinės įdėklas", pic: "multitool", src: "Ebunkeris.lt", bag: "daypack", group: "Navigacija ir įrankiai", weightG: 160 },
+      { id: "bp-repair", name: "Užtrauktukai, lipni juosta, šiukšlių maišas", brand: "Skubus remontas ir įdėklas", pic: "multitool", src: "Ebunkeris.lt", bag: "daypack", group: "Navigacija ir įrankiai", weightG: 160 },
       { id: "bp-note", name: "Neperšlampama užrašinė + pieštukas + markeris", brand: "Mode Stone / Rite in the Rain", pic: "notebook", src: "Ebunkeris.lt", bag: "daypack", group: "Navigacija ir įrankiai", weightG: 110 }
     ];
 
@@ -541,109 +488,71 @@
     const MONTHLY_CAP = 400;
 
     let state = {
-      month: 1, stageOverride: null, deg: 0, zoom: 1.0, panX: 0, panY: 0,
+      activeStage: 1, showCompleted: false, deg: 0, tiltX: 0, tiltY: 0, zoom: 1.0, panX: 0, panY: 0,
       mode: "hybrid", tab: "soldier", catFilter: "all",
       bought: {}, paid: {}, condition: {}, customItems: [], packed: {},
-      playing: false, playTimer: null, spinning: false, spinRaf: null, modalItem: null
+      spinning: false, spinRaf: null, modalItem: null, lastCompletedStage: null
     };
 
     // ==================== 1.8s OPENING CINEMATIC ====================
     let introTimers = [];
     function playIntro() {
-      const splash = document.getElementById("intro-splash");
-      const img = document.getElementById("intro-morph-img");
-      const txt = document.getElementById("intro-stage-txt");
-      introTimers.forEach(clearTimeout);
-      introTimers = [];
+      const splash = document.getElementById("intro-splash"), img = document.getElementById("intro-morph-img"), txt = document.getElementById("intro-stage-txt");
+      introTimers.forEach(clearTimeout); introTimers = [];
       splash.classList.remove("done");
-      const seq = [
-        { t: 0, s: 1, label: "ETAPAS 1 / 8 • BAZINIS" },
-        { t: 420, s: 4, label: "ETAPAS 4 / 8 • KOVINIS" },
-        { t: 840, s: 6, label: "ETAPAS 6 / 8 • ŠARVAI" },
-        { t: 1220, s: 8, label: "ETAPAS 8 / 8 • PILNAS" }
-      ];
-      seq.forEach(step => {
-        introTimers.push(setTimeout(() => {
-          img.src = RIFLEMAN_STAGES[String(step.s)];
-          txt.textContent = step.label;
-        }, step.t));
+      [{ t: 0, s: 1, l: "ETAPAS 1 / 8 • BAZINIS" }, { t: 420, s: 4, l: "ETAPAS 4 / 8 • KOVINIS" }, { t: 840, s: 6, l: "ETAPAS 6 / 8 • ŠARVAI" }, { t: 1220, s: 8, l: "ETAPAS 8 / 8 • PILNAS" }].forEach(st => {
+        introTimers.push(setTimeout(() => { img.src = RIFLEMAN_STAGES[String(st.s)]; txt.textContent = st.l; }, st.t));
       });
       introTimers.push(setTimeout(finishIntro, 1800));
     }
-
-    function finishIntro() {
-      introTimers.forEach(clearTimeout);
-      document.getElementById("intro-splash").classList.add("done");
-    }
+    function finishIntro() { introTimers.forEach(clearTimeout); document.getElementById("intro-splash").classList.add("done"); }
 
     // ==================== HELPERS ====================
     let toastTimer = null;
-    function showToast(msg) {
-      const el = document.getElementById("mil-toast");
-      el.textContent = msg; el.classList.add("show");
-      clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 1800);
-    }
-
+    function showToast(msg) { const el = document.getElementById("mil-toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 2000); }
     function loadSaved() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const p = JSON.parse(raw);
-          if (p.bought) state.bought = p.bought;
-          if (p.paid) state.paid = p.paid;
-          if (p.condition) state.condition = p.condition;
-          if (Array.isArray(p.customItems)) state.customItems = p.customItems;
-          if (p.packed) state.packed = p.packed;
-        }
+        if (raw) { const p = JSON.parse(raw); if (p.bought) state.bought = p.bought; if (p.paid) state.paid = p.paid; if (p.condition) state.condition = p.condition; if (Array.isArray(p.customItems)) state.customItems = p.customItems; if (p.packed) state.packed = p.packed; }
       } catch (e) {}
     }
-
     function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          bought: state.bought, paid: state.paid, condition: state.condition,
-          customItems: state.customItems, packed: state.packed
-        }));
-      } catch (e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ bought: state.bought, paid: state.paid, condition: state.condition, customItems: state.customItems, packed: state.packed })); } catch (e) {}
     }
-
     function getPlannedPrice(item) {
       if (state.mode === "new") return item.priceNew;
       if (state.mode === "used") return item.priceUsed;
       return (item.hybridUseUsed && !item.safetyNewOnly) ? item.priceUsed : item.priceNew;
     }
-
     function getEffectiveCost(item) {
-      if (state.bought[item.id]) {
-        const p = state.paid[item.id];
-        return (typeof p === "number" && !isNaN(p)) ? p : getPlannedPrice(item);
-      }
+      if (state.bought[item.id]) { const p = state.paid[item.id]; return (typeof p === "number" && !isNaN(p)) ? p : getPlannedPrice(item); }
       return getPlannedPrice(item);
     }
-
     function getPicUrl(k) { return ESHOP_PICS[k] || ESHOP_PICS["uniform"]; }
     function condOpts(sel) { return CONDITIONS.map(c => `<option value="${c}" ${sel === c ? "selected" : ""}>${c}</option>`).join(""); }
 
-    // Always uses automatic €400/mo + leftover rollover (simplest & smartest!)
+    function isStageDone(s) {
+      const items = BASE_GEAR_ITEMS.filter(i => i.stage === s);
+      return items.length > 0 && items.every(i => !!state.bought[i.id]);
+    }
+    function getFirstUnfinishedStage() {
+      for (let s = 1; s <= 8; s++) { if (!isStageDone(s)) return s; }
+      return 8;
+    }
+
     function computeSchedule() {
       const months = [], assignedItems = [];
       let queue = BASE_GEAR_ITEMS.map(i => ({ ...i })), carryIn = 0, m = 1;
       while (queue.length > 0 && m <= 12) {
-        const available = MONTHLY_CAP + carryIn;
-        let remaining = available;
-        const bought = [];
+        const available = MONTHLY_CAP + carryIn; let remaining = available; const bought = [];
         while (queue.length > 0) {
           const next = queue[0], cost = getEffectiveCost(next);
-          if (cost <= remaining || bought.length === 0) {
-            remaining -= cost; bought.push({ ...next, assignedMonth: m }); queue.shift();
-            if (remaining < 0) { remaining = 0; break; }
-          } else break;
+          if (cost <= remaining || bought.length === 0) { remaining -= cost; bought.push({ ...next, assignedMonth: m }); queue.shift(); if (remaining < 0) { remaining = 0; break; } }
+          else break;
         }
         const spent = bought.reduce((s, i) => s + getEffectiveCost(i), 0);
-        const leftover = Math.max(0, available - spent);
-        months.push({ m, carryIn, available, spent, leftover, items: bought });
-        assignedItems.push(...bought);
-        carryIn = leftover; m++;
+        months.push({ m, carryIn, available, spent, leftover: Math.max(0, available - spent), items: bought });
+        assignedItems.push(...bought); carryIn = Math.max(0, available - spent); m++;
       }
       if (queue.length > 0) {
         const last = months[months.length - 1];
@@ -653,114 +562,93 @@
       return { months, assignedItems, totalMonths: months.length };
     }
 
-    function determineStage(hasSet) {
-      if (state.stageOverride) return state.stageOverride;
-      const has = id => hasSet.has(id);
-      if (has("m12-optic") || has("m12-hkit")) return 8;
-      if (has("m11-helmet") || has("m9-plate1")) return 7;
-      if (has("m8-pc") || has("m7-earpro")) return 6;
-      if (has("m6-ruck") || has("m5-bag")) return 5;
-      if (has("m4-rig") || has("m4-belt")) return 4;
-      if (has("m3-lowa")) return 3;
-      if (has("m2-ifak") || has("m2-pack")) return 2;
-      return 1;
-    }
-
-    // ==================== SMOOTH 360° TURNTABLE ====================
-    let currentStageNum = 1, lastBase = "", lastOver = "";
-    function getStageAngles(s) {
-      const r = s <= 3 ? STARTER_ROT : COMBAT_ROT;
-      return { 0: RIFLEMAN_STAGES[String(s)], 90: r["90"] || RIFLEMAN_STAGES[String(s)], 180: r["180"] || RIFLEMAN_STAGES[String(s)], 270: r["270"] || RIFLEMAN_STAGES[String(s)] };
-    }
-
-    function updateTurntable(s) {
-      const d = ((state.deg % 360) + 360) % 360;
-      const views = getStageAngles(s);
-      const q = Math.floor(d / 90), a0 = q * 90, a1 = ((q + 1) % 4) * 90, t = (d - a0) / 90;
-      const twist = (t <= 0.5 ? t : t - 1) * 20;
-
+    // ==================== VIEWER: EXACT-GEAR 360° (S1/S8) & 3D TILT+ZOOM (S2-S7) ====================
+    let lastBase = "", lastOver = "";
+    function updateViewer() {
+      const s = state.activeStage;
+      const has360 = STAGE_META[s].rot360;
       const bImg = document.getElementById("layer-base"), oImg = document.getElementById("layer-overlay");
-      if (lastBase !== views[a0]) { bImg.src = views[a0]; lastBase = views[a0]; }
-      if (lastOver !== views[a1]) { oImg.src = views[a1]; lastOver = views[a1]; }
-      oImg.style.opacity = t.toFixed(3);
-
       const vt = document.getElementById("viewer-transform");
+      const hs = document.getElementById("hotspots-layer");
+
+      document.getElementById("controls-360").classList.toggle("hidden", !has360);
+      document.getElementById("controls-3d-tilt").classList.toggle("hidden", has360);
+
       const maxPan = (state.zoom - 1) * 160;
       state.panX = Math.max(-maxPan, Math.min(maxPan, state.panX));
       state.panY = Math.max(-maxPan * 1.3, Math.min(maxPan * 1.3, state.panY));
-      vt.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom}) rotateY(${twist.toFixed(1)}deg)`;
 
-      const hsOp = d < 25 ? 1 - d / 25 : d > 335 ? 1 - (360 - d) / 25 : 0;
-      const hs = document.getElementById("hotspots-layer");
-      hs.style.opacity = hsOp.toFixed(2); hs.style.pointerEvents = hsOp > 0.5 ? "auto" : "none";
+      if (has360) {
+        const rotSet = s === 1 ? STARTER_ROT : COMBAT_ROT;
+        const views = { 0: RIFLEMAN_STAGES[String(s)], 90: rotSet["90"], 180: rotSet["180"], 270: rotSet["270"] };
+        const d = ((state.deg % 360) + 360) % 360;
+        const q = Math.floor(d / 90), a0 = q * 90, a1 = ((q + 1) % 4) * 90, t = (d - a0) / 90;
+        const twist = (t <= 0.5 ? t : t - 1) * 18;
 
-      const dir = (d < 45 || d >= 315) ? "PRIEKIS" : d < 135 ? "DEŠINĖ" : d < 225 ? "NUGARA" : "KAIRĖ";
-      document.getElementById("angle-badge").textContent = `${Math.round(d)}° ${dir}`;
-      document.getElementById("rot-deg").textContent = `${Math.round(d)}°`;
-      document.getElementById("rot-slider").value = Math.round(d);
+        if (lastBase !== views[a0]) { bImg.src = views[a0]; lastBase = views[a0]; }
+        if (lastOver !== views[a1]) { oImg.src = views[a1]; lastOver = views[a1]; }
+        oImg.style.opacity = t.toFixed(3);
+        vt.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom}) rotateY(${twist.toFixed(1)}deg)`;
+
+        const hsOp = d < 25 ? 1 - d / 25 : d > 335 ? 1 - (360 - d) / 25 : 0;
+        hs.style.opacity = hsOp.toFixed(2); hs.style.pointerEvents = hsOp > 0.5 ? "auto" : "none";
+
+        const dir = (d < 45 || d >= 315) ? "PRIEKIS" : d < 135 ? "DEŠINĖ" : d < 225 ? "NUGARA" : "KAIRĖ";
+        document.getElementById("angle-badge").textContent = `${Math.round(d)}° ${dir}`;
+        document.getElementById("rot-deg").textContent = `${Math.round(d)}°`;
+        document.getElementById("rot-slider").value = Math.round(d);
+        document.getElementById("viewer-mode-hint").textContent = "SUKTI 360°";
+        const near = (Math.round(d / 90) * 90) % 360;
+        document.querySelectorAll(".rot-btn").forEach(b => b.dataset.active = (Number(b.dataset.angle) === near));
+      } else {
+        // Stages 2-7: NEVER swap to wrong gear photo — smooth interactive 3D tilt + zoom on exact Stage photo!
+        const src = RIFLEMAN_STAGES[String(s)];
+        if (lastBase !== src) { bImg.src = src; lastBase = src; }
+        oImg.style.opacity = "0";
+        vt.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom}) rotateY(${state.tiltY.toFixed(1)}deg) rotateX(${state.tiltX.toFixed(1)}deg)`;
+        hs.style.opacity = "1"; hs.style.pointerEvents = "auto";
+        document.getElementById("angle-badge").textContent = `ETAPAS ${s} • 3D`;
+        document.getElementById("viewer-mode-hint").textContent = "PRIARTINTI / 3D";
+      }
       document.getElementById("zoom-readout").textContent = `${state.zoom.toFixed(1)}×`;
-
-      const near = (Math.round(d / 90) * 90) % 360;
-      document.querySelectorAll(".rot-btn").forEach(b => b.dataset.active = (Number(b.dataset.angle) === near));
     }
 
     function setZoom(z) {
       state.zoom = Math.max(1.0, Math.min(3.0, Math.round(z * 10) / 10));
       if (state.zoom === 1.0) { state.panX = 0; state.panY = 0; }
-      updateTurntable(currentStageNum);
+      updateViewer();
     }
-
     function animateToDeg(target) {
       stopSpin();
-      const start = ((state.deg % 360) + 360) % 360;
-      const delta = ((target - start + 540) % 360) - 180;
-      const t0 = performance.now();
-      function step(now) {
-        const p = Math.min(1, (now - t0) / 340);
-        state.deg = (start + delta * (1 - Math.pow(1 - p, 3)) + 360) % 360;
-        updateTurntable(currentStageNum);
-        if (p < 1) requestAnimationFrame(step);
-      }
+      const start = ((state.deg % 360) + 360) % 360, delta = ((target - start + 540) % 360) - 180, t0 = performance.now();
+      function step(now) { const p = Math.min(1, (now - t0) / 340); state.deg = (start + delta * (1 - Math.pow(1 - p, 3)) + 360) % 360; updateViewer(); if (p < 1) requestAnimationFrame(step); }
       requestAnimationFrame(step);
     }
-
     function stopSpin() { state.spinning = false; cancelAnimationFrame(state.spinRaf); document.getElementById("btn-spin").textContent = "⟳ Sukti"; }
     function toggleSpin() {
       if (state.spinning) { stopSpin(); return; }
       state.spinning = true; document.getElementById("btn-spin").textContent = "⏸ Stop";
       let last = performance.now();
-      function loop(now) {
-        if (!state.spinning) return;
-        state.deg = (state.deg + ((now - last) / 1000) * 55) % 360;
-        last = now; updateTurntable(currentStageNum);
-        state.spinRaf = requestAnimationFrame(loop);
-      }
+      function loop(now) { if (!state.spinning) return; state.deg = (state.deg + ((now - last) / 1000) * 55) % 360; last = now; updateViewer(); state.spinRaf = requestAnimationFrame(loop); }
       state.spinRaf = requestAnimationFrame(loop);
     }
 
     // ==================== HOVER & MODAL ====================
-    const hoverCard = document.getElementById("hover-card");
-    const mobileModal = document.getElementById("mobile-modal");
-
+    const hoverCard = document.getElementById("hover-card"), mobileModal = document.getElementById("mobile-modal");
     function showHover(e, item) {
       const isB = !!state.bought[item.id];
       document.getElementById("hc-img").src = getPicUrl(item.pic);
       document.getElementById("hc-source").textContent = item.src || "LT Eshop";
       const badge = document.getElementById("hc-badge");
-      badge.textContent = isB ? "NUPIRKTA ✓" : (item.assignedMonth ? `M${item.assignedMonth}` : "KUPRINĖ");
+      badge.textContent = isB ? "NUPIRKTA ✓" : (item.stage ? `ETAPAS ${item.stage}` : "KUPRINĖ");
       badge.className = "absolute top-2 right-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold " + (isB ? "bg-[#006a44] text-white" : "bg-[#d4a63a] text-[#12170e]");
       document.getElementById("hc-title").textContent = item.name;
       document.getElementById("hc-brand").textContent = item.brand || "";
       document.getElementById("hc-price").textContent = item.priceNew !== undefined ? `€${getEffectiveCost(item)}` : `${item.weightG}g`;
-      document.getElementById("hc-alt").textContent = item.priceNew !== undefined ? `Nauja €${item.priceNew} / Naud. €${item.priceUsed}` : "";
+      document.getElementById("hc-alt").textContent = item.priceNew !== undefined ? `N €${item.priceNew} / U €${item.priceUsed}` : "";
       posHover(e); hoverCard.classList.add("visible");
     }
-    function posHover(e) {
-      let x = e.clientX + 16, y = e.clientY + 16;
-      if (x + 290 > window.innerWidth - 10) x = e.clientX - 306;
-      if (y + 240 > window.innerHeight - 10) y = Math.max(10, window.innerHeight - 250);
-      hoverCard.style.left = `${x}px`; hoverCard.style.top = `${y}px`;
-    }
+    function posHover(e) { let x = e.clientX + 16, y = e.clientY + 16; if (x + 290 > window.innerWidth - 10) x = e.clientX - 306; if (y + 240 > window.innerHeight - 10) y = Math.max(10, window.innerHeight - 250); hoverCard.style.left = `${x}px`; hoverCard.style.top = `${y}px`; }
     function hideHover() { hoverCard.classList.remove("visible"); }
 
     function openModal(item) {
@@ -769,6 +657,7 @@
       document.getElementById("mm-source").textContent = item.src || "LT Eshop";
       document.getElementById("mm-title").textContent = item.name;
       document.getElementById("mm-brand").textContent = item.brand || "";
+      document.getElementById("mm-tip").textContent = item.tip ? `💡 ${item.tip}` : "";
       const box = document.getElementById("mm-edit-box");
       if (item.priceNew !== undefined) {
         box.classList.remove("hidden");
@@ -784,7 +673,6 @@
       }
       mobileModal.classList.remove("hidden"); mobileModal.classList.add("flex");
     }
-
     function attachPreview(el, item) {
       el.addEventListener("mouseenter", e => showHover(e, item));
       el.addEventListener("mousemove", posHover);
@@ -792,17 +680,82 @@
       el.addEventListener("click", e => { if (!e.target.closest("input, select, a, button")) openModal(item); });
     }
 
+    function markItemBought(item, checked) {
+      const wasStageDone = isStageDone(item.stage);
+      state.bought[item.id] = checked;
+      if (checked && state.paid[item.id] === undefined) state.paid[item.id] = getPlannedPrice(item);
+      saveState();
+
+      // If this purchase just completed the stage, auto-remove it and jump to next unfinished stage!
+      if (checked && !wasStageDone && isStageDone(item.stage)) {
+        state.lastCompletedStage = item.stage;
+        const nextStage = getFirstUnfinishedStage();
+        state.activeStage = nextStage;
+        state.deg = 0; state.tiltX = 0; state.tiltY = 0;
+        showToast(`✓ ETAPAS ${item.stage} BAIGTAS! PEREINAMA Į ${nextStage}`);
+      } else {
+        showToast(checked ? "NUPIRKTA ✓" : "ATŽYMĖTA");
+      }
+      renderAll();
+    }
+
     // ==================== RENDER ====================
     function getAllPackItems() {
       return [...BASE_GEAR_ITEMS.filter(i => i.pack).map(i => ({ ...i, bag: i.pack.bag, group: i.pack.group, weightG: i.pack.weightG })), ...BACKPACK_EXTRAS];
     }
 
+    function renderAdviceCard(doneStages) {
+      const card = document.getElementById("advice-card");
+      const nextStage = getFirstUnfinishedStage();
+      const allDone = doneStages.length === 8;
+
+      if (allDone) {
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xs font-bold uppercase text-[#4ade80]">🏆 VISI 8 ETAPAI BAIGTI — PILNA KOVINĖ PARENGTIS!</span>
+          </div>
+          <p class="text-xs text-[#eef2e8]">Ką patartina įsigyti toliau (Pro lygis): <strong>Termovizorinis monokuliaras</strong> (~€900–1400), <strong>Šoninės balistinės plokštės</strong>, <strong>Garso slopintuvas (Ase Utra / Borelock)</strong> arba <strong>papildomos dėtuvės ir šaudymo kursai</strong>.</p>
+        `;
+        return;
+      }
+
+      const stageItems = BASE_GEAR_ITEMS.filter(i => i.stage === nextStage && !state.bought[i.id]);
+      const nextItem = stageItems[0];
+      const completedBanner = state.lastCompletedStage
+        ? `<div class="px-2.5 py-1 rounded bg-[#006a44]/35 border border-[#4ade80]/50 text-[#4ade80] font-mono text-[11px] font-bold">✓ ETAPAS ${state.lastCompletedStage} BAIGTAS IR PAŠALINTAS IŠ SĄRAŠO!</div>`
+        : "";
+
+      card.innerHTML = `
+        ${completedBanner}
+        <div class="flex items-center justify-between gap-2">
+          <span class="font-mono text-[11px] font-bold uppercase tracking-wider text-[#d4a63a]">🎯 KĄ PIRKTI TOLIAU (ETAPAS ${nextStage})</span>
+          <span class="font-mono text-[11px] text-[#93a38c]">Liko ${stageItems.length} d. šiame etape</span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-12 rounded-lg bg-white p-1 flex items-center justify-center shrink-0">
+              <img src="${getPicUrl(nextItem.pic)}" class="max-h-full max-w-full object-contain" />
+            </div>
+            <div class="min-w-0">
+              <div class="text-xs sm:text-sm font-bold truncate">${nextItem.name} <span class="text-[#d4a63a] font-mono">(~€${getPlannedPrice(nextItem)})</span></div>
+              <div class="text-[11px] text-[#eef2e8]/90 mt-0.5">💡 ${nextItem.tip || STAGE_META[nextStage].tip}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <a href="${nextItem.shops[0].url}" target="_blank" class="px-3 py-2 rounded-lg bg-[#101510] border border-[#d4a63a] text-[#d4a63a] font-mono text-[11px] font-bold uppercase active:scale-95">${nextItem.shops[0].label} ↗</a>
+            <button id="btn-quick-buy-next" class="px-3 py-2 rounded-lg bg-[#006a44] text-white font-mono text-[11px] font-bold uppercase active:scale-95">✓ Jau turiu</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("btn-quick-buy-next").addEventListener("click", () => markItemBought(nextItem, true));
+    }
+
     function renderAll() {
       const sched = computeSchedule();
-      if (state.month > sched.totalMonths) state.month = sched.totalMonths;
-      const cur = sched.months[state.month - 1];
-      const acquired = sched.assignedItems.filter(i => i.assignedMonth <= state.month);
-      currentStageNum = determineStage(new Set(acquired.map(i => i.id)));
+      const doneStages = [1,2,3,4,5,6,7,8].filter(isStageDone);
+      const visibleStages = state.showCompleted ? [1,2,3,4,5,6,7,8] : [1,2,3,4,5,6,7,8].filter(s => !isStageDone(s));
+      if (!visibleStages.length) visibleStages.push(8);
+      if (!visibleStages.includes(state.activeStage)) state.activeStage = visibleStages[0];
 
       // KPIs
       let paid = 0, rem = 0, cnt = 0;
@@ -813,87 +766,99 @@
       document.getElementById("kpi-months").textContent = `${sched.totalMonths} mėn. planas`;
       document.getElementById("kpi-paid").textContent = `€${paid.toLocaleString()}`;
       document.getElementById("kpi-bought").textContent = `${cnt} / ${BASE_GEAR_ITEMS.length + state.customItems.length}`;
-      document.getElementById("kpi-m").textContent = cur.m;
-      document.getElementById("kpi-spent").textContent = `€${cur.spent}`;
-      document.getElementById("kpi-avail").textContent = cur.available;
-      document.getElementById("kpi-left").textContent = cur.leftover;
+      document.getElementById("kpi-stage-stat").textContent = `${state.activeStage} / 8`;
+      document.getElementById("kpi-done-stages").textContent = `${doneStages.length} baigti ✓`;
 
-      // Stage Strip
-      document.getElementById("stage-header").textContent = `ETAPAS ${currentStageNum} / 8 • ${STAGE_META[currentStageNum].short.split(" ")[1].toUpperCase()}`;
-      document.getElementById("photo-caption").textContent = STAGE_META[currentStageNum].cap;
+      renderAdviceCard(doneStages);
+
+      // Toggle Completed Stages Button
+      const togBtn = document.getElementById("toggle-completed-stages");
+      if (doneStages.length > 0) {
+        togBtn.classList.remove("hidden");
+        togBtn.textContent = state.showCompleted ? `Slėpti baigtus (${doneStages.length})` : `✓ Baigti (${doneStages.length}) — Rodyti`;
+      } else {
+        togBtn.classList.add("hidden");
+      }
+
+      // Stage Strip (Finished stages removed unless toggled!)
+      document.getElementById("stage-header").textContent = `ETAPAS ${state.activeStage} / 8 • ${STAGE_META[state.activeStage].short.split(" ")[1].toUpperCase()}`;
+      document.getElementById("photo-caption").textContent = STAGE_META[state.activeStage].cap;
       const strip = document.getElementById("stage-strip");
-      strip.innerHTML = [1,2,3,4,5,6,7,8].map(s => `
-        <button data-st="${s}" data-active="${s === currentStageNum}" class="mil-btn-active flex items-center gap-1.5 px-2 py-1 rounded-lg border border-[#31402e] bg-[#101510] shrink-0 active:scale-95">
-          <img src="${RIFLEMAN_STAGES[String(s)]}" class="w-7 h-9 object-cover rounded" />
-          <span class="font-mono text-[10px] font-bold uppercase">${STAGE_META[s].short}</span>
-        </button>
-      `).join("");
+      strip.innerHTML = visibleStages.map(s => {
+        const done = isStageDone(s);
+        return `
+          <button data-st="${s}" data-active="${s === state.activeStage}" class="mil-btn-active flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[#31402e] bg-[#101510] shrink-0 active:scale-95 ${done ? "opacity-60" : ""}">
+            <img src="${RIFLEMAN_STAGES[String(s)]}" class="w-7 h-9 object-cover rounded" />
+            <div class="text-left">
+              <div class="font-mono text-[10px] font-bold uppercase">${done ? "✓ " : ""}${STAGE_META[s].short}</div>
+              <div class="font-mono text-[9px] opacity-75">${STAGE_META[s].rot360 ? "360°" : "3D"}</div>
+            </div>
+          </button>
+        `;
+      }).join("");
       strip.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
-        stopTour(); const s = Number(b.dataset.st); state.stageOverride = s;
-        state.month = Math.min(sched.totalMonths, Math.max(1, Math.round((s / 8) * sched.totalMonths)));
-        renderAll();
+        stopSpin(); state.activeStage = Number(b.dataset.st); state.deg = 0; state.tiltX = 0; state.tiltY = 0; renderAll();
       }));
 
-      // Hotspots + Turntable
+      // Hotspots + Viewer
+      const upToStage = BASE_GEAR_ITEMS.filter(i => i.stage <= state.activeStage);
+      const curStageItems = BASE_GEAR_ITEMS.filter(i => i.stage === state.activeStage);
       const hsLayer = document.getElementById("hotspots-layer");
       hsLayer.innerHTML = "";
-      const chSlots = new Set(cur.items.map(i => i.slot));
+      const chSlots = new Set(curStageItems.map(i => i.slot));
       HOTSPOTS.forEach(h => {
-        const si = acquired.filter(i => i.slot === h.slot); if (!si.length) return;
+        const si = upToStage.filter(i => i.slot === h.slot); if (!si.length) return;
         const dot = document.createElement("div");
         dot.className = "hotspot"; dot.style.left = `${h.x}%`; dot.style.top = `${h.y}%`;
         dot.dataset.changed = chSlots.has(h.slot);
         attachPreview(dot, si[si.length - 1]);
         hsLayer.appendChild(dot);
       });
-      updateTurntable(currentStageNum);
+      updateViewer();
 
-      // Month Purchases
-      document.getElementById("month-title").textContent = `MĖNUO ${cur.m} PIRKINIAI (${cur.items.length})`;
-      document.getElementById("month-spent").textContent = `€${cur.spent}`;
-      document.getElementById("month-left").textContent = `+€${cur.leftover} → M${cur.m + 1}`;
-      const mList = document.getElementById("month-items");
-      mList.innerHTML = "";
-      cur.items.forEach(item => {
+      // Current Stage Items List
+      const stageDoneCnt = curStageItems.filter(i => state.bought[i.id]).length;
+      const stageRemCost = curStageItems.filter(i => !state.bought[i.id]).reduce((a, i) => a + getPlannedPrice(i), 0);
+      document.getElementById("stage-items-title").textContent = `ETAPO ${state.activeStage} EKIPUOTĖ`;
+      document.getElementById("stage-cost").textContent = stageRemCost === 0 ? "BAIGTA ✓" : `Liko €${stageRemCost}`;
+      document.getElementById("stage-prog").textContent = `${stageDoneCnt} / ${curStageItems.length} nupirkta`;
+
+      const sList = document.getElementById("stage-items-list");
+      sList.innerHTML = "";
+      curStageItems.forEach(item => {
         const isB = !!state.bought[item.id];
         const pv = state.paid[item.id] !== undefined ? state.paid[item.id] : "";
         const row = document.createElement("div");
-        row.className = `p-2 rounded-lg bg-[#101510] border border-[#31402e] hover:border-[#d4a63a] flex items-center justify-between gap-2 cursor-pointer ${isB ? "border-[#4ade80]/50" : ""}`;
+        row.className = `p-2 rounded-lg bg-[#101510] border border-[#31402e] hover:border-[#d4a63a] flex items-center justify-between gap-2 cursor-pointer ${isB ? "border-[#4ade80]/50 opacity-75" : ""}`;
         row.innerHTML = `
           <div class="flex items-center gap-2.5 min-w-0">
-            <input type="checkbox" ${isB ? "checked" : ""} class="m-cb w-5 h-5 accent-[#4ade80] shrink-0" />
+            <input type="checkbox" ${isB ? "checked" : ""} class="s-cb w-5 h-5 accent-[#4ade80] shrink-0" />
             <div class="w-11 h-10 rounded bg-white p-0.5 flex items-center justify-center shrink-0"><img src="${getPicUrl(item.pic)}" loading="lazy" class="max-h-full max-w-full object-contain" /></div>
-            <div class="min-w-0"><div class="text-xs font-bold truncate ${isB ? "line-through opacity-65" : ""}">${item.name}</div><div class="text-[10px] text-[#93a38c] truncate">${item.brand}</div></div>
+            <div class="min-w-0"><div class="text-xs font-bold truncate ${isB ? "line-through" : ""}">${item.name}</div><div class="text-[10px] text-[#93a38c] truncate">${item.brand}</div></div>
           </div>
           <div class="flex items-center gap-1 bg-[#171f16] border border-[#31402e] rounded px-2 py-1 shrink-0 font-mono">
             <span class="text-[11px] text-[#93a38c]">€</span>
-            <input type="number" min="0" inputmode="numeric" placeholder="${getPlannedPrice(item)}" value="${pv}" class="m-pr w-12 bg-transparent text-xs text-right focus:outline-none text-[#d4a63a] font-bold" />
+            <input type="number" min="0" inputmode="numeric" placeholder="${getPlannedPrice(item)}" value="${pv}" class="s-pr w-12 bg-transparent text-xs text-right focus:outline-none text-[#d4a63a] font-bold" />
           </div>
         `;
         attachPreview(row, item);
-        row.querySelector(".m-cb").addEventListener("change", e => {
-          state.bought[item.id] = e.target.checked;
-          if (e.target.checked && state.paid[item.id] === undefined) state.paid[item.id] = getPlannedPrice(item);
-          saveState(); renderAll(); showToast(e.target.checked ? "NUPIRKTA ✓" : "ATŽYMĖTA");
-        });
-        row.querySelector(".m-pr").addEventListener("change", e => {
+        row.querySelector(".s-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+        row.querySelector(".s-pr").addEventListener("change", e => {
           const v = e.target.value.trim();
-          if (v === "") delete state.paid[item.id]; else { state.paid[item.id] = Math.max(0, Number(v)); state.bought[item.id] = true; }
+          if (v === "") delete state.paid[item.id]; else { state.paid[item.id] = Math.max(0, Number(v)); markItemBought(item, true); return; }
           saveState(); renderAll(); showToast("KAINA IŠSAUGOTA");
         });
-        mList.appendChild(row);
+        sList.appendChild(row);
       });
 
-      // Month Bars
+      // Monthly Rollover Bars
       const bars = document.getElementById("month-bars");
       const maxV = Math.max(400, ...sched.months.map(m => m.available));
-      bars.className = `grid gap-1 items-end h-24 pt-1 ${sched.totalMonths <= 6 ? "grid-cols-6" : "grid-cols-6 sm:grid-cols-12"}`;
+      bars.className = `grid gap-1 items-end h-20 pt-1 ${sched.totalMonths <= 6 ? "grid-cols-6" : "grid-cols-6 sm:grid-cols-12"}`;
       bars.innerHTML = sched.months.map(mo => {
-        const sp = Math.max(10, Math.round((mo.spent / maxV) * 100));
-        const sel = mo.m === state.month;
-        return `<button data-bm="${mo.m}" class="flex flex-col items-center justify-end h-full gap-0.5"><span class="text-[9px] font-mono ${sel ? "text-[#d4a63a] font-bold" : "text-[#93a38c]"}">€${mo.spent}</span><div class="w-full rounded-t" style="height:${sp}%;background:${sel ? "#d4a63a" : "#31402e"}"></div><span class="text-[9px] font-mono ${sel ? "text-[#d4a63a] font-bold" : "text-[#93a38c]"}">M${mo.m}</span></button>`;
+        const sp = Math.max(12, Math.round((mo.spent / maxV) * 100));
+        return `<div class="flex flex-col items-center justify-end h-full gap-0.5"><span class="text-[9px] font-mono text-[#93a38c]">€${mo.spent}</span><div class="w-full rounded-t bg-[#d4a63a]/80" style="height:${sp}%"></div><span class="text-[9px] font-mono text-[#93a38c]">M${mo.m}</span></div>`;
       }).join("");
-      bars.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { stopTour(); state.stageOverride = null; state.month = Number(b.dataset.bm); renderAll(); }));
 
       // Checklist Grid (Tab 2)
       const grid = document.getElementById("checklist-grid");
@@ -920,7 +885,7 @@
             <input type="checkbox" ${isB ? "checked" : ""} class="c-cb w-5 h-5 accent-[#4ade80] shrink-0" />
             <div class="w-12 h-11 rounded bg-white p-0.5 flex items-center justify-center shrink-0"><img src="${getPicUrl(item.pic)}" loading="lazy" class="max-h-full max-w-full object-contain" /></div>
             <div class="min-w-0 flex-1">
-              <div class="flex justify-between text-[10px] font-mono text-[#93a38c]"><span class="text-[#d4a63a] font-bold">M${item.assignedMonth}</span><span>~€${getPlannedPrice(item)}</span></div>
+              <div class="flex justify-between text-[10px] font-mono text-[#93a38c]"><span class="text-[#d4a63a] font-bold">E${item.stage} • M${item.assignedMonth}</span><span>~€${getPlannedPrice(item)}</span></div>
               <div class="text-xs font-bold truncate ${isB ? "line-through opacity-65" : ""}">${item.name}</div>
             </div>
           </div>
@@ -930,9 +895,9 @@
           </div>
         `;
         attachPreview(card, item);
-        card.querySelector(".c-cb").addEventListener("change", e => { state.bought[item.id] = e.target.checked; if (e.target.checked && state.paid[item.id] === undefined) state.paid[item.id] = getPlannedPrice(item); saveState(); renderAll(); showToast(e.target.checked ? "NUPIRKTA ✓" : "ATŽYMĖTA"); });
-        card.querySelector(".c-pr").addEventListener("change", e => { const v = e.target.value.trim(); if (v === "") delete state.paid[item.id]; else { state.paid[item.id] = Math.max(0, Number(v)); state.bought[item.id] = true; } saveState(); renderAll(); showToast("KAINA IŠSAUGOTA"); });
-        card.querySelector(".c-cond").addEventListener("change", e => { state.condition[item.id] = e.target.value; if (e.target.value === "LŠS Išduota") { state.paid[item.id] = 0; state.bought[item.id] = true; } saveState(); renderAll(); showToast(e.target.value); });
+        card.querySelector(".c-cb").addEventListener("change", e => markItemBought(item, e.target.checked));
+        card.querySelector(".c-pr").addEventListener("change", e => { const v = e.target.value.trim(); if (v === "") delete state.paid[item.id]; else { state.paid[item.id] = Math.max(0, Number(v)); markItemBought(item, true); return; } saveState(); renderAll(); showToast("KAINA IŠSAUGOTA"); });
+        card.querySelector(".c-cond").addEventListener("change", e => { state.condition[item.id] = e.target.value; if (e.target.value === "LŠS Išduota") { state.paid[item.id] = 0; markItemBought(item, true); return; } saveState(); renderAll(); showToast(e.target.value); });
         grid.appendChild(card);
       });
 
@@ -970,7 +935,6 @@
     }
 
     // ==================== CONTROLS & GESTURES ====================
-    function stopTour() { state.playing = false; clearInterval(state.playTimer); document.getElementById("btn-tour").textContent = "▶ Turas"; }
     function switchTab(t) {
       state.tab = t;
       document.querySelectorAll(".tab-btn, .bnav-btn").forEach(b => b.dataset.active = (b.dataset.tab === t));
@@ -982,8 +946,7 @@
     window.addEventListener("beforeinstallprompt", e => {
       e.preventDefault(); deferredPrompt = e;
       const b = document.getElementById("pwa-install-btn");
-      b.classList.remove("hidden");
-      b.onclick = () => { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } };
+      b.classList.remove("hidden"); b.onclick = () => { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } };
     });
 
     function initGestures() {
@@ -1002,50 +965,54 @@
       stage.addEventListener("pointermove", e => {
         if (!drag) return;
         const dx = e.clientX - sx, dy = e.clientY - sy;
-        if (state.zoom > 1.05) { state.panX = sPx + dx; state.panY = sPy + dy; updateTurntable(currentStageNum); }
-        else { state.deg = ((sDeg - dx * 0.9) % 360 + 360) % 360; updateTurntable(currentStageNum); }
+        if (state.zoom > 1.05) {
+          state.panX = sPx + dx; state.panY = sPy + dy; updateViewer();
+        } else if (STAGE_META[state.activeStage].rot360) {
+          state.deg = ((sDeg - dx * 0.9) % 360 + 360) % 360; updateViewer();
+        } else {
+          // Smooth 3D inspect tilt without changing gear photo!
+          state.tiltY = Math.max(-24, Math.min(24, dx * 0.18));
+          state.tiltX = Math.max(-14, Math.min(14, -dy * 0.12));
+          updateViewer();
+        }
       });
-      stage.addEventListener("pointerup", () => { drag = false; });
+      stage.addEventListener("pointerup", () => { drag = false; if (!STAGE_META[state.activeStage].rot360) { state.tiltX = 0; state.tiltY = 0; updateViewer(); } });
       stage.addEventListener("pointercancel", () => { drag = false; });
 
-      stage.addEventListener("touchstart", e => {
-        if (e.touches.length === 2) { pDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); sZ = state.zoom; }
-      }, { passive: true });
-      stage.addEventListener("touchmove", e => {
-        if (e.touches.length === 2 && pDist > 0) { e.preventDefault(); setZoom(sZ * (Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY) / pDist)); }
-      }, { passive: false });
+      stage.addEventListener("touchstart", e => { if (e.touches.length === 2) { pDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); sZ = state.zoom; } }, { passive: true });
+      stage.addEventListener("touchmove", e => { if (e.touches.length === 2 && pDist > 0) { e.preventDefault(); setZoom(sZ * (Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY) / pDist)); } }, { passive: false });
 
       document.getElementById("zoom-in").addEventListener("click", () => setZoom(state.zoom + 0.5));
       document.getElementById("zoom-out").addEventListener("click", () => setZoom(state.zoom - 0.5));
-      document.getElementById("rot-slider").addEventListener("input", e => { stopSpin(); state.deg = Number(e.target.value); updateTurntable(currentStageNum); });
+      document.getElementById("btn-reset-tilt").addEventListener("click", () => { state.tiltX = 0; state.tiltY = 0; setZoom(1.0); });
+      document.getElementById("rot-slider").addEventListener("input", e => { stopSpin(); state.deg = Number(e.target.value); updateViewer(); });
       document.getElementById("btn-spin").addEventListener("click", toggleSpin);
       document.querySelectorAll(".rot-btn").forEach(b => b.addEventListener("click", () => animateToDeg(Number(b.dataset.angle))));
     }
 
     function init() {
       loadSaved();
+      state.activeStage = getFirstUnfinishedStage();
       initGestures();
       playIntro();
 
       document.getElementById("btn-replay-intro").addEventListener("click", playIntro);
+      document.getElementById("toggle-completed-stages").addEventListener("click", () => { state.showCompleted = !state.showCompleted; renderAll(); });
       document.getElementById("mm-close").addEventListener("click", () => { mobileModal.classList.add("hidden"); mobileModal.classList.remove("flex"); });
       mobileModal.addEventListener("click", e => { if (e.target === mobileModal) { mobileModal.classList.add("hidden"); mobileModal.classList.remove("flex"); } });
 
       document.getElementById("mm-bought-cb").addEventListener("change", e => {
-        if (!state.modalItem) return; const id = state.modalItem.id;
-        state.bought[id] = e.target.checked;
-        if (e.target.checked && state.paid[id] === undefined) state.paid[id] = Number(document.getElementById("mm-price-in").value) || getPlannedPrice(state.modalItem);
-        saveState(); renderAll(); showToast("IŠSAUGOTA ✓");
+        if (!state.modalItem) return;
+        if (e.target.checked && state.paid[state.modalItem.id] === undefined) state.paid[state.modalItem.id] = Number(document.getElementById("mm-price-in").value) || getPlannedPrice(state.modalItem);
+        markItemBought(state.modalItem, e.target.checked);
       });
       document.getElementById("mm-price-in").addEventListener("change", e => {
-        if (!state.modalItem) return; const id = state.modalItem.id;
-        state.paid[id] = Math.max(0, Number(e.target.value) || 0); state.bought[id] = true;
-        document.getElementById("mm-bought-cb").checked = true; saveState(); renderAll(); showToast(`€${state.paid[id]} IŠSAUGOTA`);
+        if (!state.modalItem) return; state.paid[state.modalItem.id] = Math.max(0, Number(e.target.value) || 0);
+        document.getElementById("mm-bought-cb").checked = true; markItemBought(state.modalItem, true);
       });
       document.getElementById("mm-cond-in").addEventListener("change", e => {
-        if (!state.modalItem) return; const id = state.modalItem.id;
-        state.condition[id] = e.target.value;
-        if (e.target.value === "LŠS Išduota") { state.paid[id] = 0; state.bought[id] = true; document.getElementById("mm-price-in").value = 0; document.getElementById("mm-bought-cb").checked = true; }
+        if (!state.modalItem) return; state.condition[state.modalItem.id] = e.target.value;
+        if (e.target.value === "LŠS Išduota") { state.paid[state.modalItem.id] = 0; document.getElementById("mm-price-in").value = 0; document.getElementById("mm-bought-cb").checked = true; markItemBought(state.modalItem, true); return; }
         saveState(); renderAll(); showToast(e.target.value);
       });
 
@@ -1063,16 +1030,8 @@
       document.querySelectorAll(".tab-btn, .bnav-btn").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.tab)));
       document.querySelectorAll("#cat-chips button").forEach(b => b.addEventListener("click", () => { state.catFilter = b.dataset.cat; document.querySelectorAll("#cat-chips button").forEach(x => x.dataset.active = (x === b)); renderAll(); }));
 
-      document.getElementById("btn-prev").addEventListener("click", () => { stopTour(); state.stageOverride = Math.max(1, currentStageNum - 1); state.month = Math.max(1, state.month - 1); renderAll(); });
-      document.getElementById("btn-next").addEventListener("click", () => { stopTour(); state.stageOverride = Math.min(8, currentStageNum + 1); state.month = Math.min(computeSchedule().totalMonths, state.month + 1); renderAll(); });
-      document.getElementById("btn-tour").addEventListener("click", () => {
-        if (state.playing) stopTour();
-        else {
-          state.playing = true; document.getElementById("btn-tour").textContent = "⏸ Stop";
-          let s = 1; state.stageOverride = s; renderAll();
-          state.playTimer = setInterval(() => { s++; if (s > 8) { stopTour(); state.stageOverride = null; renderAll(); return; } state.stageOverride = s; renderAll(); }, 1250);
-        }
-      });
+      document.getElementById("btn-prev").addEventListener("click", () => { stopSpin(); state.activeStage = Math.max(1, state.activeStage - 1); state.deg = 0; renderAll(); });
+      document.getElementById("btn-next").addEventListener("click", () => { stopSpin(); state.activeStage = Math.min(8, state.activeStage + 1); state.deg = 0; renderAll(); });
 
       document.getElementById("preset-24h").addEventListener("click", () => { state.packed = {}; getAllPackItems().filter(p => p.bag === "daypack").forEach(p => state.packed[p.id] = true); saveState(); renderAll(); showToast("35L (24H) SUPAKUOTA"); });
       document.getElementById("preset-72h").addEventListener("click", () => { state.packed = {}; getAllPackItems().forEach(p => state.packed[p.id] = true); saveState(); renderAll(); showToast("80L (72H) SUPAKUOTA"); });
@@ -1084,10 +1043,10 @@
       });
       document.getElementById("in-import").addEventListener("change", e => {
         const f = e.target.files[0]; if (!f) return;
-        const r = new FileReader(); r.onload = () => { try { const p = JSON.parse(r.result); if (p.bought) state.bought = p.bought; if (p.paid) state.paid = p.paid; if (p.condition) state.condition = p.condition; if (Array.isArray(p.customItems)) state.customItems = p.customItems; if (p.packed) state.packed = p.packed; saveState(); renderAll(); showToast("ATKURTA ✓"); } catch (err) { showToast("KLAIDA"); } };
+        const r = new FileReader(); r.onload = () => { try { const p = JSON.parse(r.result); if (p.bought) state.bought = p.bought; if (p.paid) state.paid = p.paid; if (p.condition) state.condition = p.condition; if (Array.isArray(p.customItems)) state.customItems = p.customItems; if (p.packed) state.packed = p.packed; state.activeStage = getFirstUnfinishedStage(); saveState(); renderAll(); showToast("ATKURTA ✓"); } catch (err) { showToast("KLAIDA"); } };
         r.readAsText(f);
       });
-      document.getElementById("btn-reset-all").addEventListener("click", () => { state.bought = {}; state.paid = {}; state.condition = {}; state.customItems = []; state.packed = {}; saveState(); renderAll(); showToast("IŠVALYTA"); });
+      document.getElementById("btn-reset-all").addEventListener("click", () => { state.bought = {}; state.paid = {}; state.condition = {}; state.customItems = []; state.packed = {}; state.lastCompletedStage = null; state.activeStage = 1; saveState(); renderAll(); showToast("IŠVALYTA"); });
 
       renderAll();
     }
